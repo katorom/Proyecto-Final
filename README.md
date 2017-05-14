@@ -1,5 +1,5 @@
 # Proyecto-Final
-# Prototipo de automatización de BICIRRUN
+# Prototipo de automatización del sistema BICIRRUN
 Repositorio creado para plasmar los avances progresivos del proyecto final 
 
 Integrantes: 
