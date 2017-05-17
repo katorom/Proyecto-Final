@@ -1,12 +1,9 @@
-
 import co.jimezam.util.Dialogo;
 import processing.serial.*;
-import java.util.Map;
 import de.bezier.data.sql.*;
 MySQL msql;
 
 Serial myPort; 
-byte val[]; 
 void setup() {
   size(500, 500);
   String portName = Serial.list()[1];
