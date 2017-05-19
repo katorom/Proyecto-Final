@@ -22,5 +22,11 @@ public class Usuario{
       this.Nombre = msql.getString(1);                                                                      
       this.CardID = CardID;                                                                                 
       this.Estado = msql.getBoolean(2);                                                                     
-    }                                                                                                        
+    }  
+    void askfBike(){
+       myPort.clear();
+       myPort.write(1); 
+       println("has pedido una bici");
+       delay(3000);
+    }
 }
