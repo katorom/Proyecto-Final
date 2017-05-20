@@ -10,58 +10,46 @@ Usuario elusuario; //Se crea una variable de tipo usuario.
 String user     = "root";
 String pass     = "";
 String database = "proyectopoo";
-int mode;
+int mode = 0;
+int counter = 0;
 
 void setup() {
-  
+
   size(500, 500);
   String portName = Serial.list()[1];
   myPort = new Serial(this, portName, 9600);
   msql = new MySQL( this, "localhost", database, user, pass );
-  if ( msql.connect() ){}//Primero se verifica si se esta conectado a la base de datos SQL
-  else{
-      println("failed connection");//Si no, se imprime un mensaje.
-      while(true);
+  if ( msql.connect() ) {
+  }//Primero se verifica si se esta conectado a la base de datos SQL
+  else {
+    println("failed connection");//Si no, se imprime un mensaje.
+    while (true);
   }
 }
-  
-void draw(){
-  
+
+void draw() {
   background(0);
-  myPort.clear(); //Se limpia el puerto serial.
-  String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
-  switch(mode){
+  switch(mode) {
   case 0: 
-  while(true){ // el ciclo while se ejecutara hasta que la persona acerque su carnet.
-     id = cardID(); 
-     if(id != null){break;} 
-     delay(1000); //para corregir errores de envio del ID del carnet se agrega un delay
-  }
-  msql.query( "SELECT COUNT(*) FROM usuarios WHERE CardID LIKE '"+id+"'"); //Se realiza la busqueda del ID dentro de la base de datos
-  msql.next();
-  
-  if(msql.getInt(1) == 0){
-    elusuario = new Usuario(nombre(),id,msql); 
-  }else{ 
-    elusuario = new Usuario(id,msql); 
-    println("el usuario" +" "+elusuario.Nombre+" "+ "ya se encuentra registrado ");
-  }
-  //println("this table has " + msql.getString(1) + " number of rows" );
-  break;
+    Registro();
+    //println(mode);
+    break;
+
   case 1:
-  elusuario.askfBike();
-  break;
-  }   
+    //println(mode);
+    accion();
+    break;
+  }
 }
-  
+
 String cardID() { // metodo para leer el ID del carnet
   while (myPort.available() > 0) {
     String inBuffer = myPort.readString();   
     if (inBuffer != null)
       return(inBuffer);
-    else{
+    else {
       return("vacio");
-    }  
+    }
   }
   return(null);
 }
@@ -71,7 +59,45 @@ String nombre() {// metodo para obtener el nombre de la persona
   return(str);
 }
 
-void keyPressed(){
-  if (key == ' ')
-    mode = mode < 1 ? mode+1 : 0;
+void keyPressed() {
+
+  if (key == ' ') {
+
+    if (mode < 1) {
+      mode++;
+    } else {
+      mode = 0;
+    }
+  }   //mode = mode < 1 ? mode+1 : 0;
+}
+
+void accion() {
+  while (counter < 1) {
+    elusuario.askfBike();
+    println("estoy en accion");
+    counter ++;
+  }
+}
+
+void Registro() {
+
+  String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
+  myPort.clear(); //Se limpia el puerto serial.
+  while (true) { // el ciclo while se ejecutara hasta que la persona acerque su carnet.
+    id = cardID(); 
+    if (id != null) {
+      break;
+    } 
+    delay(1000); //para corregir errores de envio del ID del carnet se agrega un delay
+  }
+  msql.query( "SELECT COUNT(*) FROM usuarios WHERE CardID LIKE '"+id+"'"); //Se realiza la busqueda del ID dentro de la base de datos
+  msql.next();
+
+  if (msql.getInt(1) == 0) {
+    elusuario = new Usuario(nombre(), id, msql);
+  } else { 
+    elusuario = new Usuario(id, msql); 
+    println("Bienvenido" +" "+elusuario.Nombre);
+  }
+  //println("this table has " + msql.getString(1) + " number of rows" );
 }
