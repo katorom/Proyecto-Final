@@ -10,15 +10,15 @@ Usuario elusuario; //Se crea una variable de tipo usuario.
 String user     = "root";
 String pass     = "";
 String database = "proyectopoo";
-int mode = 0;
-int counter = 0;
+int mode = 0; //Variable para hacer el switch
+int counter = 0; //Variable para ue la funcion pedir bici se ejecute solo una vez 
 
 void setup() {
 
   size(500, 500);
-  String portName = Serial.list()[1];
-  myPort = new Serial(this, portName, 9600);
-  msql = new MySQL( this, "localhost", database, user, pass );
+  String portName = Serial.list()[1]; //Se selecciona el puerto serie de ARDUINO
+  myPort = new Serial(this, portName, 9600); //Se crea el objeto tipo Serie
+  msql = new MySQL( this, "localhost", database, user, pass ); // Se crea el objeto tipo SQL
   if ( msql.connect() ) {
   }//Primero se verifica si se esta conectado a la base de datos SQL
   else {
@@ -43,9 +43,9 @@ void draw() {
 }
 
 String cardID() { // metodo para leer el ID del carnet
-  while (myPort.available() > 0) {
-    String inBuffer = myPort.readString();   
-    if (inBuffer != null)
+  while (myPort.available() > 0) { //Mientras haya un puerto serial conectado
+    String inBuffer = myPort.readString();   //En esta variable se guarda el ID del carnet enviado por ARDUINO
+    if (inBuffer != null) 
       return(inBuffer);
     else {
       return("vacio");
@@ -59,7 +59,7 @@ String nombre() {// metodo para obtener el nombre de la persona
   return(str);
 }
 
-void keyPressed() {
+void keyPressed() {//Metodo temporal para alternar el menu
 
   if (key == ' ') {
 
@@ -71,7 +71,7 @@ void keyPressed() {
   }   //mode = mode < 1 ? mode+1 : 0;
 }
 
-void accion() {
+void accion() { //Funciopn desde donde se llama el metodo pedir bici de usuario
   while (counter < 1) {
     elusuario.askfBike();
     println("estoy en accion");
