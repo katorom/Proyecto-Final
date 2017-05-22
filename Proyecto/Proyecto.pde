@@ -30,6 +30,7 @@ void setup() {
 void draw() {
   background(0);
   switch(mode) {
+    
   case 0: 
     Registro();
     //println(mode);
