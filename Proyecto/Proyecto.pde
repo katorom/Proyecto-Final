@@ -11,7 +11,8 @@ String user     = "root";
 String pass     = "";
 String database = "proyectopoo";
 int mode = 0; //Variable para hacer el switch
-int counter = 0; //Variable para ue la funcion pedir bici se ejecute solo una vez 
+//int counter = 0; //Variable para ue la funcion pedir bici se ejecute solo una vez 
+String cod = " ";//Cambio variable para ue la funcion pedir bici se ejecute solo una vez
 
 void setup() {
 
@@ -73,11 +74,12 @@ void keyPressed() {//Metodo temporal para alternar el menu
 }
 
 void accion() { //Funciopn desde donde se llama el metodo pedir bici de usuario
-  while (counter < 1) {
+  while (cod != elusuario.CardID) {
     elusuario.askfBike();
     println("estoy en accion");
-    counter ++;
+    cod = elusuario.CardID;
   }
+  
 }
 
 void Registro() {
