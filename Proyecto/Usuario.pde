@@ -26,7 +26,23 @@ public class Usuario {
   void askfBike() {
     myPort.clear();
     myPort.write(1); 
-    println("has pedido una bici" + "" + Nombre);
-    delay(3000);
+    println("has pedido una bici" + " " + Nombre);
+    msql.query("UPDATE usuarios SET Estado = true WHERE Nombre= '"+Nombre+"'");
+  }
+  void returnBike() {
+    myPort.clear();
+    myPort.write(2);
+    println("has devuelto la bici" + " " + Nombre);
+    msql.query("UPDATE usuarios SET Estado = false WHERE Nombre= '"+Nombre+"'");
+  }
+  void accion() { //Funcion desde donde se llama el metodo pedir bici de usuario
+    if (elusuario.Estado == false) {
+      elusuario.askfBike();
+      mode++;
+    } else {
+      println("ya tienes una bici en uso, deseas devolverla?");
+      elusuario.returnBike();
+      mode ++;
+    }
   }
 }

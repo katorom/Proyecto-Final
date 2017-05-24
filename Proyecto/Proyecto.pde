@@ -11,7 +11,7 @@ String user     = "root";
 String pass     = "";
 String database = "proyectopoo";
 int mode = 0; //Variable para hacer el switch
-int counter = 0; //Variable para ue la funcion pedir bici se ejecute solo una vez 
+//String counter = " "; //Variable para ue la funcion pedir bici se ejecute solo una vez 
 
 void setup() {
 
@@ -30,15 +30,17 @@ void setup() {
 void draw() {
   background(0);
   switch(mode) {
-    
+
   case 0: 
     Registro();
-    //println(mode);
     break;
 
   case 1:
-    //println(mode);
-    accion();
+    elusuario.accion();
+    break;
+
+  case 2:
+    nothing();
     break;
   }
 }
@@ -64,7 +66,7 @@ void keyPressed() {//Metodo temporal para alternar el menu
 
   if (key == ' ') {
 
-    if (mode < 1) {
+    if (mode < 2) {
       mode++;
     } else {
       mode = 0;
@@ -72,18 +74,10 @@ void keyPressed() {//Metodo temporal para alternar el menu
   }   //mode = mode < 1 ? mode+1 : 0;
 }
 
-void accion() { //Funciopn desde donde se llama el metodo pedir bici de usuario
-  while (counter < 1) {
-    elusuario.askfBike();
-    println("estoy en accion");
-    counter ++;
-  }
-}
-
 void Registro() {
 
   String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
-  myPort.clear(); //Se limpia el puerto serial.
+  myPort.clear(); //Se limpia el puerto serial.  
   while (true) { // el ciclo while se ejecutara hasta que la persona acerque su carnet.
     id = cardID(); 
     if (id != null) {
@@ -101,4 +95,8 @@ void Registro() {
     println("Bienvenido" +" "+elusuario.Nombre);
   }
   //println("this table has " + msql.getString(1) + " number of rows" );
+}
+void nothing() {
+  Registro();
+  mode++;
 }
