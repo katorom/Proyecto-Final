@@ -1,10 +1,17 @@
-abstract class Lugar {
-  Table tablaBicis;
+public class Lugar{
+  String place;
   
-  void bicis (){
-    tablaBicis = new Table();
-  tablaBicis.addColumn("Numero");
-  tablaBicis.addColumn("Estado");
+  public Lugar(String Lugar){
+    this.place = Lugar;
+  }
+  
+  void asignBici(String Estacion){
+    msql.query("SELECT from bicicletas Number,User,Place WHERE Place = '"+Estacion+"' && User = Ninguno"); 
+    msql.next();
+    int Number = msql.getInt(1);
+    String User = msql.getString(2);
+    String Place = msql.getString(3);
+    
   }
   
 }

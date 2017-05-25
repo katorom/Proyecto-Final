@@ -1,4 +1,3 @@
-import de.bezier.data.sql.*;
 //clase usuario
 public class Usuario {
   //Todos los usuarios del sistema tendrán estos atributos.
@@ -24,24 +23,51 @@ public class Usuario {
     this.Estado = msql.getBoolean(2);
   }  
   void askfBike() {
+    
     myPort.clear();
-    myPort.write(1); 
-    println("has pedido una bici" + " " + Nombre);
-    msql.query("UPDATE usuarios SET Estado = true WHERE Nombre= '"+Nombre+"'");
+    int seleccion;
+    msql.query( "SELECT COUNT(*) FROM bicicletas WHERE Place = '"+Estacion+"' && User = 'Ninguno'");
+    msql.next();
+    
+    if(msql.getInt(1) == 2){
+      seleccion = int(random(1,2));
+      println("estoy en el if del random");
+    }
+    else{
+      msql.query( "SELECT Number, User FROM bicicletas WHERE Place = '"+Estacion+"' && User = 'Ninguno'");
+      msql.next();
+      seleccion = msql.getInt(1);
+      println("Estoy en el else");
+    }
+    msql.query("UPDATE bicicletas SET User = '"+CardID+"', Place = 'inUse' WHERE Number = "+seleccion+"");
+    myPort.write(seleccion); 
+    println("has pedido la bici" + " " + seleccion + " " + Nombre);
+    msql.query("UPDATE usuarios SET Estado = true WHERE Nombre = '"+Nombre+"'");
   }
   void returnBike() {
     myPort.clear();
-    myPort.write(2);
-    println("has devuelto la bici" + " " + Nombre);
-    msql.query("UPDATE usuarios SET Estado = false WHERE Nombre= '"+Nombre+"'");
+    msql.query("SELECT Number FROM bicicletas WHERE User = '"+CardID+"'");
+    msql.next();
+    int Numero = msql.getInt(1);
+    myPort.write(Numero);
+    msql.query("UPDATE bicicletas SET User = 'Ninguno', Place = '"+Estacion+"' WHERE User = '"+CardID+"'");
+    msql.query("UPDATE usuarios SET Estado = false WHERE Nombre = '"+Nombre+"'");
+    println("has devuelto la bici"+ " " +Numero+ " " + Nombre);
   }
   void accion() { //Funcion desde donde se llama el metodo pedir bici de usuario
     if (elusuario.Estado == false) {
       elusuario.askfBike();
       mode++;
-    } else {
-      println("ya tienes una bici en uso, deseas devolverla?");
+    } 
+    else{
       elusuario.returnBike();
+      /*String confirm = Dialogo.preguntar("Escribe si o no", "Deseas devolver la bicicleta?");
+      if (confirm == "si" || confirm == "Si" || confirm == "SI" || confirm == "sI") {
+        elusuario.returnBike();
+      } 
+      else {
+        println("Esta bien, continua usandola");
+      }*/
       mode ++;
     }
   }

@@ -5,16 +5,17 @@ import de.bezier.data.sql.*;
 MySQL msql; // se declara el objetos SQL
 Serial myPort; //se declara el objeto serial
 Usuario elusuario; //Se crea una variable de tipo usuario.
+Lugar lugar;
 
 //Varialbles necesarias para el constructor del objeto SQL
 String user     = "root";
 String pass     = "";
 String database = "proyectopoo";
 int mode = 0; //Variable para hacer el switch
+String Estacion = "Calle 45";
 //String counter = " "; //Variable para ue la funcion pedir bici se ejecute solo una vez 
 
 void setup() {
-
   size(500, 500);
   String portName = Serial.list()[1]; //Se selecciona el puerto serie de ARDUINO
   myPort = new Serial(this, portName, 9600); //Se crea el objeto tipo Serie
@@ -37,10 +38,6 @@ void draw() {
 
   case 1:
     elusuario.accion();
-    break;
-
-  case 2:
-    nothing();
     break;
   }
 }
@@ -66,7 +63,7 @@ void keyPressed() {//Metodo temporal para alternar el menu
 
   if (key == ' ') {
 
-    if (mode < 2) {
+    if (mode < 1) {
       mode++;
     } else {
       mode = 0;
@@ -95,8 +92,4 @@ void Registro() {
     println("Bienvenido" +" "+elusuario.Nombre);
   }
   //println("this table has " + msql.getString(1) + " number of rows" );
-}
-void nothing() {
-  Registro();
-  mode++;
 }
