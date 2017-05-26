@@ -5,7 +5,7 @@ import de.bezier.data.sql.*;
 MySQL msql; // se declara el objetos SQL
 Serial myPort; //se declara el objeto serial
 Usuario elusuario; //Se crea una variable de tipo usuario.
-Lugar lugar;
+Bicicleta bici;
 
 //Varialbles necesarias para el constructor del objeto SQL
 String user     = "root";
@@ -34,11 +34,14 @@ void draw() {
 
   case 0: 
     Registro();
+    mode = -1;
     break;
 
   case 1:
     elusuario.accion();
+    mode = 0;
     break;
+   default:break;
   }
 }
 
@@ -54,19 +57,12 @@ String cardID() { // metodo para leer el ID del carnet
   return(null);
 }
 
-String nombre() {// metodo para obtener el nombre de la persona
-  String str = Dialogo.preguntar("Nombre", "Ingrese su nombre");
-  return(str);
-}
-
 void keyPressed() {//Metodo temporal para alternar el menu
 
   if (key == ' ') {
 
-    if (mode < 1) {
-      mode++;
-    } else {
-      mode = 0;
+    if (mode == -1) {
+      mode = 1;
     }
   }   //mode = mode < 1 ? mode+1 : 0;
 }
@@ -86,7 +82,9 @@ void Registro() {
   msql.next();
 
   if (msql.getInt(1) == 0) {
-    elusuario = new Usuario(nombre(), id, msql);
+    String Nombre = Dialogo.preguntar("Nombre", "Ingrese su nombre");
+    String Correo = Dialogo.preguntar("Correo","Por favor ingrese aqui su correo");
+    elusuario = new Usuario(Nombre, id, Correo, msql);
   } else { 
     elusuario = new Usuario(id, msql); 
     println("Bienvenido" +" "+elusuario.Nombre);
