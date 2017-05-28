@@ -26,7 +26,7 @@ public void reg_click2(GButton source, GEvent event) { //_CODE_:registrar:874211
   println("registrar - GButton >> GEvent." + event + " @ " + millis());
   String Nombre = nombre.getText();
   String Correo = email.getText();
-  elusuario = new Usuario(Nombre, ta, Correo, msql);
+  elusuario = new Usuario(Nombre, idreg, Correo, msql);
   inicio();
 } //_CODE_:registrar:874211:
 
