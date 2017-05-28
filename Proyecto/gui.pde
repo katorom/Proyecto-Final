@@ -34,14 +34,20 @@ public void pedir_click1(GButton source, GEvent event) { //_CODE_:Pedir:223393:
   println("Pedir - GButton >> GEvent." + event + " @ " + millis());
   elusuario.askfBike();
   println("pidio");
-  inicio();
+  NumBici.setText("Toma la bicicleta número: "+ bici.Number);
+  Pedir.setVisible(false);
+  NumBici.setVisible(true);
+  entendido.setVisible(true);
 } //_CODE_:Pedir:223393:
 
 public void devolver_click1(GButton source, GEvent event) { //_CODE_:Devolver:670841:
   println("Devolver - GButton >> GEvent." + event + " @ " + millis());
   elusuario.returnBike();
   println("devolvio");
-  inicio();
+  NumBici.setText("Has devuelto la bicicleta número: "+ bici.Number);
+  Devolver.setVisible(false);
+  NumBici.setVisible(true);
+  entendido.setVisible(true);
 } //_CODE_:Devolver:670841:
 
 public void siguiente(GButton source, GEvent event) { //_CODE_:sig:519522:
@@ -49,6 +55,13 @@ public void siguiente(GButton source, GEvent event) { //_CODE_:sig:519522:
   Registro();
   println("ddd");
 } //_CODE_:sig:519522:
+
+public void entendido_click1(GButton source, GEvent event) { //_CODE_:entendido:911232:
+  println("entendido - GButton >> GEvent." + event + " @ " + millis());
+  NumBici.setVisible(false);
+  entendido.setVisible(false);
+  inicio();
+} //_CODE_:entendido:911232:
 
 
 
@@ -67,7 +80,7 @@ public void createGUI(){
   nombre = new GTextField(this, 540, 372, 200, 40, G4P.SCROLLBARS_NONE);
   nombre.setOpaque(true);
   nombre.addEventHandler(this, "nombre_change");
-  email = new GTextField(this, 542, 479, 200, 40, G4P.SCROLLBARS_NONE);
+  email = new GTextField(this, 532, 481, 200, 40, G4P.SCROLLBARS_NONE);
   email.setPromptText("example@unal.edu.co");
   email.setOpaque(true);
   email.addEventHandler(this, "textfield2_change1");
@@ -87,7 +100,7 @@ public void createGUI(){
   Pedir.setText("Pedir Bbcicleta");
   Pedir.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   Pedir.addEventHandler(this, "pedir_click1");
-  Devolver = new GButton(this, 336, 354, 300, 100);
+  Devolver = new GButton(this, 334, 347, 300, 100);
   Devolver.setText("Devolver");
   Devolver.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   Devolver.addEventHandler(this, "devolver_click1");
@@ -95,6 +108,13 @@ public void createGUI(){
   sig.setText("Siguiente");
   sig.setLocalColorScheme(GCScheme.CYAN_SCHEME);
   sig.addEventHandler(this, "siguiente");
+  NumBici = new GLabel(this, 222, 424, 500, 100);
+  NumBici.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  NumBici.setOpaque(false);
+  entendido = new GButton(this, 442, 624, 300, 80);
+  entendido.setText("Entendido");
+  entendido.setLocalColorScheme(GCScheme.CYAN_SCHEME);
+  entendido.addEventHandler(this, "entendido_click1");
 }
 
 // Variable declarations 
@@ -108,3 +128,5 @@ GLabel corr;
 GButton Pedir; 
 GButton Devolver; 
 GButton sig; 
+GLabel NumBici; 
+GButton entendido; 

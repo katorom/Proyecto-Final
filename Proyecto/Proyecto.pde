@@ -32,6 +32,7 @@ void setup() {
     println("failed connection");//Si no, se imprime un mensaje.
     while (true);
   }
+  letra();
   inicio();
 }
 
@@ -39,6 +40,7 @@ void draw() {
   background(bg);
 }
 
+//Configuración de la pantalla de inicio
 void inicio () {
   Inicio.setVisible(true);
   sig.setVisible(true);
@@ -49,6 +51,12 @@ void inicio () {
   corr.setVisible(false);
   Pedir.setVisible(false); 
   Devolver.setVisible(false);
+  NumBici.setVisible(false);
+  entendido.setVisible(false);
+}
+
+//Controla el tipo de la letra y el tamaño de la letra, solo se ejecuta una vez
+void letra (){
   Inicio.setFont(new Font("Times New Roman", Font.PLAIN, 35));
   email.setFont(new Font("Times New Roman", Font.PLAIN, 25));
   nombre.setFont(new Font("Times New Roman", Font.PLAIN, 25));
@@ -58,6 +66,8 @@ void inicio () {
   sig.setFont(new Font("Times New Roman", Font.PLAIN, 30));
   Pedir.setFont(new Font("Times New Roman", Font.PLAIN, 25)); 
   Devolver.setFont(new Font("Times New Roman", Font.PLAIN, 25));  
+  NumBici.setFont(new Font("Times New Roman", Font.PLAIN, 25));  
+  entendido.setFont(new Font("Times New Roman", Font.PLAIN, 25));
 }
 
 String cardID() { // metodo para leer el ID del carnet
