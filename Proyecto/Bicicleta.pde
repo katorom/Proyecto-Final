@@ -1,34 +1,59 @@
 public class Bicicleta {
+
   int Number;
-  String User; 
-  String Lugar; 
+  boolean Disponibilidad; 
 
-  public Bicicleta(String Estacion, Usuario elusuario, MySQL msql) {
-    this.User = elusuario.CardID; 
-    this.Lugar = Estacion;
-  }
-
-  //Método para quitar la bicicleta de "disponibles" y asignar a un usuario en la base de datos
-  void out () { 
-    msql.query( "SELECT Number, User FROM bicicletas WHERE Place = '"+Estacion+"' && User = 'Ninguno'");
+  public Bicicleta(MySQL msql) {     
+    msql.query("SELECT IdBicicleta FROM `estaciones`,`estación-bicicletas`,`bicicletas` WHERE (`estaciones`.`NombreEstacion`='"+CurrentStation+"') AND (`estación-bicicletas`.`IdEstacion` = `estaciones`.`IdEstacion`) AND (`estación-bicicletas`.`IdBicicletas`=`bicicletas`.`IdBicicleta`) AND (EstadoBicicleta=false)");
     msql.next();
-    Number = msql.getInt(1);
-    msql.query("UPDATE bicicletas SET User = '"+ User +"', Place = 'inUse' WHERE Number = "+Number+"");
-    //myPort.write(seleccion); 
-    println("has pedido la bici" + " " + Number + " " + elusuario.Nombre);
-    msql.query("UPDATE usuarios SET Estado = true WHERE Nombre = '"+elusuario.Nombre+"'");
+    this.Number = msql.getInt(1);
   }
 
-  //Método para poner la bicileta en "disponibles" y quitarle la asignación al usuario en la base de datos
-  void in () {
+  void assignBike() {
+    println(this.Number);
     myPort.clear();
-    msql.query("SELECT Number FROM bicicletas WHERE User = '"+User+"'");
-    msql.next();
-    Number = msql.getInt(1);
+    String Llegada = Dialogo.preguntar("Estacion", "¿Hacía dónde vas?");
+    station = new Estacion (msql, Llegada);
+    msql.execute("INSERT INTO prestamos (CardID,IdBicicleta,IdEstacionSalida,IdEstacionLlegada) values ('"+elusuario.CardID+"\r\n',"+this.Number+","+IdCurrentStation+","+station.id_estacion+")");
+    //msql.next();
+    //myPort.write(this.Number);  motores
+    println("Has pedido la bici "+this.Number+" Sr@ "+elusuario.Nombre);
+    msql.query("UPDATE usuarios SET EstadoUsuario = true WHERE CardIDUsuario LIKE '"+elusuario.CardID+"%'");
+    //msql.next();
+    msql.query("UPDATE bicicletas SET EstadoBicicleta = true WHERE IdBicicleta = "+this.Number+"");
+    //msql.next();
+    msql.query("DELETE FROM `estación-bicicletas` WHERE `IdEstacion`="+IdCurrentStation+" AND `IdBicicletas`="+this.Number+"");
+    //msql.next();
+  }
 
-    //myPort.write(Numero);
-    msql.query("UPDATE bicicletas SET User = 'Ninguno', Place = '"+Estacion+"' WHERE User = '"+User+"'");
-    msql.query("UPDATE usuarios SET Estado = false WHERE Nombre = '"+elusuario.Nombre+"'");
-    println("has devuelto la bici"+ " " +Number+ " " + elusuario.Nombre);
+  void returnBike() {
+    myPort.clear();
+    msql.query("SELECT IdBicicleta FROM prestamos WHERE CardID LIKE '"+elusuario.CardID+"%'");
+    msql.next();
+    this.Number = msql.getInt(1);
+    println(this.Number);
+    //myPort.write(Numero); motores
+    msql.query("UPDATE prestamos SET HoraSalida = HoraSalida, HoraLlegada = CURRENT_TIMESTAMP WHERE CardID LIKE '"+elusuario.CardID+"%'");
+    //msql.next();
+    msql.query("SELECT TIMESTAMPDIFF(MINUTE, HoraSalida, HoraLlegada) FROM prestamos WHERE CardID LIKE '"+elusuario.CardID+"%'");
+    msql.next();
+    int Demora = (msql.getInt(1))-15;
+    int Valor = Demora*200;
+    msql.query("UPDATE bicicletas SET EstadoBicicleta = false WHERE IdBicicleta="+this.Number+"");
+    //msql.next();
+    msql.execute("INSERT INTO `estación-bicicletas`(`IdEstacion`, `IdBicicletas`) VALUES ("+IdCurrentStation+","+this.Number+")");
+    //msql.next();
+    msql.query("UPDATE usuarios SET EstadoUsuario = false WHERE CardIDUsuario LIKE '"+elusuario.CardID+"%'");
+    //msql.next();
+    println("Has devuelto la bicicleta");
+    if (Demora > 0) {
+      msql.execute("INSERT INTO deudores (CardIDUsuario, TiempoExcedido, ValorMulta) values('"+elusuario.CardID+"',"+Demora+","+Valor+") ");
+      //msql.next();
+      msql.query("DELETE FROM prestamos WHERE CardID LIKE '"+elusuario.CardID+"%'");
+      //msql.next();
+      println("Usted se ha demorado "+Demora+" minutos de más, por lo tanto debe pagar una multa de: "+Valor+" para poder seguir usando el sistema.");
+    }
+    msql.query("DELETE FROM prestamos WHERE CardID LIKE '"+elusuario.CardID+"%'");
+    //msql.next();
   }
 }

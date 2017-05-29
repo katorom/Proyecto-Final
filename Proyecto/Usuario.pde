@@ -4,7 +4,7 @@ public class Usuario {
   String Nombre; //Es el nombre de la persona, se usa para terminos de claridad y de entendimiento de los usuarios.
   String CardID;  //Es el ID del carnet, nos permite la autenticación del usuario.
   boolean Estado; //Es un booleano que nos permite saber si el usuario esta activo: true (usandouna bici) o inactivo: false (ya ha devuelto la bici)
-  String Correo;  //Correo del usuario
+  String Correo;
   //Se crea un primer constructor del objeto, este constructor se usa para cuando el usuario no se ha registrado
 
   public Usuario(String Nombre, String CardID, String Correo, MySQL msql) {//usuario no registrado                         
@@ -12,45 +12,47 @@ public class Usuario {
     this.CardID = CardID;                                                                                 
     this.Estado = false;   
     this.Correo = Correo;
-    msql.execute("INSERT INTO usuarios (Nombre,CardID,Estado,Correo) values ('"+Nombre+"','"+CardID+"',false,'"+Correo+"')");
+    msql.execute("INSERT INTO usuarios (CardIDUsuario,NombreUsuario,CorreoUsuario,EstadoUsuario) values ('"+CardID+"','"+Nombre+"','"+Correo+"',false)");
   }                                                                                                       
 
   //Se crea un segundo constructor, el cual se usa para un usuario registrado, este constructor solo recibe dos parametros
   public Usuario(String CardID, MySQL msql) {//usuario registrado                                           
-    msql.query( "SELECT Nombre,Estado,Correo FROM usuarios WHERE CardID LIKE '"+CardID+"'");                     
+    msql.query("SELECT NombreUsuario, EstadoUsuario, CorreoUsuario FROM usuarios WHERE CardIDUsuario LIKE '"+CardID+"%'");                     
     msql.next();                                                                                          
     this.Nombre = msql.getString(1);                                                                      
-    this.CardID = CardID;                                                                                 
+    this.CardID = CardID;                                   
     this.Estado = msql.getBoolean(2);
     this.Correo = msql.getString(3);
   }  
-  void askfBike() {
-    //Primero se verifica si hay bicicletas disponibles en la estación 
-    myPort.clear();
-    msql.query( "SELECT COUNT(*) FROM bicicletas WHERE Place = '"+Estacion+"' && User = 'Ninguno'");
+  void accion() {//Funcion para saber si el usuario pide o devuelve la bici
+    msql.query("SELECT EstadoUsuario FROM usuarios WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
     msql.next();
-
-    if (msql.getInt(1) == 0) {
-      println("No hay bicicletas disponibles");
+    this.Estado = msql.getBoolean(1);
+    if (this.Estado == false) {
+      msql.query("SELECT COUNT(*) FROM deudores WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
+      msql.next();
+      if (msql.getInt(1)==0) {
+        msql.query("SELECT COUNT(*) FROM `estaciones`,`estación-bicicletas`,`bicicletas` WHERE (`estación-bicicletas`.`IdEstacion` = `estaciones`.`IdEstacion`) AND (`estación-bicicletas`.`IdBicicletas`=`bicicletas`.`IdBicicleta`) AND (`estaciones`.`NombreEstacion`='"+CurrentStation+"')");
+        msql.next();
+        if (msql.getInt(1) == 0) {
+          println("No hay bicicletas disponibles");
+        } else {         
+          bici = new Bicicleta(msql);
+          println(bici.Number);
+          bici.assignBike();
+          mode++;
+        }
+      } else {
+        msql.query("SELECT ValorMulta FROM deudores WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
+        int Valor_Multa = msql.getInt(1);
+        println("No puedes pedir una bici, debes pagar un valor de $"+Valor_Multa);
+      }
     } else {
-      bici = new Bicicleta(Estacion, this, msql); //Se instancia una bicicleta, que será asignada al usuario
-      bici.out(); //Llama metodo de bicicleta para asignarla al usuario en la base de datos
-    }
-  }
-  void returnBike() {
-    bici = new Bicicleta(Estacion, this, msql);//Se intancia una bicicleta ya asignada al usuario
-    bici.in (); //Llama método de bicicleta para quitar la asignación al usuario en la base de datos
-  }
-  void accion() { //Metodo desde donde se decide si el usuario puede pedir bicicleta o tiene que devolver
-    Inicio.setVisible(false);
-    sig.setVisible(false);
-    println("estoy en accion");
-    if (this.Estado == false) {//Si el usuario no tiene bici prestada, va a pantalla de pedir bici
-      Pedir.setVisible(true);
-      println("estoy en pedir");
-    } else {
-      Devolver.setVisible(true); //Si el usuario tiene bici prestada va a pantalla de devolver bici
-      println("estoy en devolver");
+      bici = new Bicicleta(msql);
+      bici.returnBike();
+      //int confirm = Dialogo.confirmar("Devolver Bicicleta","¿Desea devolver la bicicleta?",Dialogo.TIPO_ERROR,Dialogo.OPCION_OK_CANCELAR);
+      //println(confirm);
+      mode++;
     }
   }
 }
