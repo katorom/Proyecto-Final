@@ -60,19 +60,14 @@ public void ok_click1(GButton source, GEvent event) { //_CODE_:ok:844847:
 
 public void Estaciones1_click1(GDropList source, GEvent event) { //_CODE_:Estaciones1:259145:
   println("Estaciones1 - GDropList >> GEvent." + event + " @ " + millis());
-  String a =Estaciones1.getSelectedText ();
-  Boolean State;
-  do {                                                  
-      msql.query("SELECT NombreEstacion, EstadoEstacion, IdEstacion FROM estaciones WHERE (NombreEstacion LIKE '"+a+"%')");
-      msql.next();
-      State = msql.getBoolean(2);
-      adm.setText("La estación seleccionada ya esta en uso, seleccione una diferente");
-      Estaciones1.setVisible(true);
-      adm.setVisible(true);
-    } while (State==true);
   CurrentStation = Estaciones1.getSelectedText ();
+  println(CurrentStation);
+  station = new Estacion(msql);
+  //CurrentStation = station.NameStation;
+  IdCurrentStation = station.id_estacion;
   adm.setVisible(false);
   Estaciones1.setVisible(false);
+  println("Sali");
   inicio();
 } //_CODE_:Estaciones1:259145:
 
@@ -81,6 +76,7 @@ public void destino_click1(GDropList source, GEvent event) { //_CODE_:destino:38
   String llegada = destino.getSelectedText ();
   bici.assignBike(llegada);
   NumBici.setText(elusuario.Nombre +" toma la bicicleta número: "+ bici.Number);
+  destino.setSelected(0);
   destino.setVisible(false);
   dest.setVisible(false);
   NumBici.setVisible(true);

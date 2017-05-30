@@ -12,8 +12,8 @@ Bicicleta bici;
 Estacion station;
 
 //Varialbles necesarias para el constructor del objeto SQL
-String user     = "root";
-String pass     = "";
+String user     = "root4";
+String pass     = "nolecreo";
 String database = "proyectopoo";
 //int mode = 0; //Variable para hacer el switch
 String CurrentStation;
@@ -27,9 +27,9 @@ void setup() {
   bg = loadImage("bicirrun2.jpg"); //Se carga imagen para el fondo 
   createGUI(); //Funcion de la interfaz gráfica, autogenerada
   customGUI();
-  String portName = Serial.list()[1]; //Se selecciona el puerto serie de ARDUINO
+  String portName = Serial.list()[0]; //Se selecciona el puerto serie de ARDUINO
   myPort = new Serial(this, portName, 9600); //Se crea el objeto tipo Serie
-  msql = new MySQL( this, "localhost", database, user, pass ); // Se crea el objeto tipo SQL
+  msql = new MySQL( this, "10.203.147.20", database, user, pass ); // Se crea el objeto tipo SQL
   if (msql.connect()) {
   }//Primero se verifica si se esta conectado a la base de datos SQL
   else {
@@ -37,9 +37,9 @@ void setup() {
     while (true);
   }
   in();
-  station = new Estacion(msql);
+  //station = new Estacion(msql);
   //CurrentStation = station.NameStation;
-  IdCurrentStation = station.id_estacion;
+  //IdCurrentStation = station.id_estacion;
 }
 
 void draw() {
@@ -119,6 +119,7 @@ void Registro() {
 //Primera pantalla, solo se ve una vez
 //Configura la estacion en la que se encuentra el computador
 void in () {
+  
   adm.setVisible(true);
   Estaciones1.setVisible(true);
   Inicio.setVisible(false);
@@ -176,8 +177,8 @@ public void customGUI(){
   Nodis.setFont(new Font("Cooper Black", Font.PLAIN, 35));
   adm.setFont(new Font("Cooper Black", Font.PLAIN, 35));
   Estaciones1.setFont(new Font("Times New Roman", Font.PLAIN, 22));
-  destino.setFont(new Font("Cooper Black", Font.PLAIN, 35));
-  dest.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  dest.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  destino.setFont(new Font("Times New Roman", Font.PLAIN, 22));
   
   
   //Cambio del color de las instrucciones

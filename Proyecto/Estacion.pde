@@ -6,15 +6,12 @@ public class Estacion {
 
   public Estacion(MySQL msql) {
 
-    /*do {
+    do {
       this.NameStation = CurrentStation;                                                  
       msql.query("SELECT NombreEstacion, EstadoEstacion, IdEstacion FROM estaciones WHERE (NombreEstacion LIKE '"+this.NameStation+"%')");
       msql.next();
       this.State = msql.getBoolean(2);
-      adm.setText("La estación seleccionada ya esta en uso, seleccione una diferente");
-      Estaciones1.setVisible(true);
-      adm.setVisible(true);
-    } while (State==true);*/
+    } while (State==true);
     this.State = msql.getBoolean(2);
     this.id_estacion = msql.getInt(3);
     println(this.id_estacion);
