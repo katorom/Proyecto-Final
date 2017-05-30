@@ -25,6 +25,8 @@ public class Usuario {
     this.Correo = msql.getString(3);
   }  
   void accion() {//Funcion para saber si el usuario pide o devuelve la bici
+    Inicio.setVisible(false);
+    sig.setVisible(false);
     msql.query("SELECT EstadoUsuario FROM usuarios WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
     msql.next();
     this.Estado = msql.getBoolean(1);
@@ -36,23 +38,31 @@ public class Usuario {
         msql.next();
         if (msql.getInt(1) == 0) {
           println("No hay bicicletas disponibles");
+          Nodis.setVisible(true);
+          ok.setVisible(true);
         } else {         
           bici = new Bicicleta(msql);
           println(bici.Number);
-          bici.assignBike();
-          mode++;
+          preg.setVisible(true);
+          Pedir.setVisible(true);
+          //bici.assignBike();
+          //mode++;
         }
       } else {
         msql.query("SELECT ValorMulta FROM deudores WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
         int Valor_Multa = msql.getInt(1);
         println("No puedes pedir una bici, debes pagar un valor de $"+Valor_Multa);
+        Nodis.setText("No puedes pedir una bici, debes pagar un valor de $: "+ Valor_Multa);
+        Nodis.setVisible(true);
+        ok.setVisible(true);
       }
     } else {
       bici = new Bicicleta(msql);
-      bici.returnBike();
-      //int confirm = Dialogo.confirmar("Devolver Bicicleta","¿Desea devolver la bicicleta?",Dialogo.TIPO_ERROR,Dialogo.OPCION_OK_CANCELAR);
-      //println(confirm);
-      mode++;
+      preg.setText(elusuario.Nombre + " tiene la bicicleta "+ bici.Number +", ¿Desea devolverla?");
+      preg.setVisible(true);
+      Devolver.setVisible(true);
+      //bici.returnBike();
+      //mode++;
     }
   }
 }

@@ -6,16 +6,21 @@ public class Estacion {
 
   public Estacion(MySQL msql) {
 
-    do {
-      this.NameStation = Dialogo.preguntar("Estacion", "Ingrese el nombre de la estacion a cargar");                                                                            
+    /*do {
+      this.NameStation = CurrentStation;                                                  
       msql.query("SELECT NombreEstacion, EstadoEstacion, IdEstacion FROM estaciones WHERE (NombreEstacion LIKE '"+this.NameStation+"%')");
       msql.next();
       this.State = msql.getBoolean(2);
-    } while (State==true);
+      adm.setText("La estación seleccionada ya esta en uso, seleccione una diferente");
+      Estaciones1.setVisible(true);
+      adm.setVisible(true);
+    } while (State==true);*/
+    this.State = msql.getBoolean(2);
     this.id_estacion = msql.getInt(3);
     println(this.id_estacion);
     msql.query("UPDATE estaciones SET EstadoEstacion = true WHERE NombreEstacion='"+this.NameStation+"'");
     println("La estacion del dia es: "+" "+this.NameStation);
+    //inicio();
   }
 
   public Estacion(MySQL msql, String NameStation) {

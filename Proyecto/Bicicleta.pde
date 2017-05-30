@@ -9,10 +9,10 @@ public class Bicicleta {
     this.Number = msql.getInt(1);
   }
 
-  void assignBike() {
+  void assignBike(String Llegada) {
     println(this.Number);
     myPort.clear();
-    String Llegada = Dialogo.preguntar("Estacion", "¿Hacía dónde vas?");
+    //String Llegada = Dialogo.preguntar("Estacion", "¿Hacía dónde vas?");
     station = new Estacion (msql, Llegada);
     msql.execute("INSERT INTO prestamos (CardID,IdBicicleta,IdEstacionSalida,IdEstacionLlegada) values ('"+elusuario.CardID+"\r\n',"+this.Number+","+IdCurrentStation+","+station.id_estacion+")");
     //msql.next();
