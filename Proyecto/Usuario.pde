@@ -1,5 +1,5 @@
 //clase usuario
-public class Usuario {
+public class Usuario extends User {
   //Todos los usuarios del sistema tendrán estos atributos.
   String Nombre; //Es el nombre de la persona, se usa para terminos de claridad y de entendimiento de los usuarios.
   String CardID;  //Es el ID del carnet, nos permite la autenticación del usuario.
