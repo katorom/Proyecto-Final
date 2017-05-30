@@ -12,24 +12,25 @@ Bicicleta bici;
 Estacion station;
 
 //Varialbles necesarias para el constructor del objeto SQL
-String user     = "root4";
-String pass     = "nolecreo";
+String user     = "root";
+String pass     = "";
 String database = "proyectopoo";
-//int mode = 0; //Variable para hacer el switch
+String ListaEstacionesO;
+String ListaEstacionesD;
 String CurrentStation;
 int IdCurrentStation;
 String idreg;
-//String counter = " "; //Variable para ue la funcion pedir bici se ejecute solo una vez 
 PImage bg; //Variable de imagen para fondo
-
+String ListaO [];
+String ListaD [];
 void setup() {
   size(845, 800);
   bg = loadImage("bicirrun2.jpg"); //Se carga imagen para el fondo 
   createGUI(); //Funcion de la interfaz gráfica, autogenerada
   customGUI();
-  String portName = Serial.list()[0]; //Se selecciona el puerto serie de ARDUINO
+  String portName = Serial.list()[1]; //Se selecciona el puerto serie de ARDUINO
   myPort = new Serial(this, portName, 9600); //Se crea el objeto tipo Serie
-  msql = new MySQL( this, "10.203.147.20", database, user, pass ); // Se crea el objeto tipo SQL
+  msql = new MySQL( this, "localhost", database, user, pass ); // Se crea el objeto tipo SQL
   if (msql.connect()) {
   }//Primero se verifica si se esta conectado a la base de datos SQL
   else {
@@ -45,19 +46,19 @@ void setup() {
 void draw() {
   background(bg);
   /*switch(mode) {
-
-  case 0: 
-    //Registro();
-    mode = -1;
-    break;
-
-  case 1:
-    elusuario.accion();
-    mode = 0;
-    break;
-  default:
-    break;
-  }*/
+   
+   case 0: 
+   //Registro();
+   mode = -1;
+   break;
+   
+   case 1:
+   elusuario.accion();
+   mode = 0;
+   break;
+   default:
+   break;
+   }*/
 }
 
 
@@ -75,14 +76,14 @@ String cardID() { // metodo para leer el ID del carnet
 }
 
 /*void keyPressed() {//Metodo temporal para alternar el menu
-
-  if (key == ' ') {
-
-    if (mode == -1) {
-      mode = 1;
-    }
-  }   //mode = mode < 1 ? mode+1 : 0;
-}*/
+ 
+ if (key == ' ') {
+ 
+ if (mode == -1) {
+ mode = 1;
+ }
+ }   //mode = mode < 1 ? mode+1 : 0;
+ }*/
 
 void Registro() {
 
@@ -99,8 +100,8 @@ void Registro() {
   msql.next();
   if (msql.getInt(1) == 0) {
     /*String Nombre = Dialogo.preguntar("Nombre", "Ingrese su nombre");
-    String Correo = Dialogo.preguntar("Correo", "Por favor ingrese aqui su correo");
-    elusuario = new Usuario(Nombre, id, Correo, msql);*/
+     String Correo = Dialogo.preguntar("Correo", "Por favor ingrese aqui su correo");
+     elusuario = new Usuario(Nombre, id, Correo, msql);*/
     idreg=id;
     Inicio.setVisible(false);
     sig.setVisible(false);
@@ -113,13 +114,22 @@ void Registro() {
     elusuario = new Usuario(id, msql); 
     println("Bienvenido" +" "+elusuario.Nombre);
     elusuario.accion(); //Se llama metodo accion de usuario en el que se comprueba si el usuario tiene o no bici prestada
-  } 
+  }
 }
 
 //Primera pantalla, solo se ve una vez
 //Configura la estacion en la que se encuentra el computador
 void in () {
-  
+  msql.query("SELECT NombreEstacion FROM estaciones where EstadoEstacion = false");
+  ListaEstacionesO = "Seleccionar Estacion";
+  println(ListaEstacionesO);
+  while (msql.next()==true) {
+    String ListaEstacionestmp = msql.getString(1);
+    ListaEstacionesO = ListaEstacionesO+","+ListaEstacionestmp;
+  }
+  ListaO = split(ListaEstacionesO, ",");
+  printArray(ListaO);
+  Estaciones1.setItems(ListaO, 0);
   adm.setVisible(true);
   Estaciones1.setVisible(true);
   Inicio.setVisible(false);
@@ -141,6 +151,7 @@ void in () {
 
 //Configuración de la pantalla de inicio
 void inicio () {
+  /**/
   Inicio.setVisible(true);
   sig.setVisible(true);
   email.setVisible(false);
@@ -161,7 +172,7 @@ void inicio () {
 }
 
 //Controla el tipo de la letra y el tamaño de la letra, solo se ejecuta una vez
-public void customGUI(){
+public void customGUI() {
   Inicio.setFont(new Font("Cooper Black", Font.PLAIN, 40));
   email.setFont(new Font("Times New Roman", Font.PLAIN, 20));
   nombre.setFont(new Font("Times New Roman", Font.PLAIN, 22));
@@ -179,15 +190,15 @@ public void customGUI(){
   Estaciones1.setFont(new Font("Times New Roman", Font.PLAIN, 22));
   dest.setFont(new Font("Cooper Black", Font.PLAIN, 35));
   destino.setFont(new Font("Times New Roman", Font.PLAIN, 22));
-  
-  
+
+
   //Cambio del color de las instrucciones
   GCScheme.changePaletteColor(10, 2, color(0, 123, 142));
   GCScheme.changePaletteColor(10, 3, color(0, 123, 142));
   GCScheme.changePaletteColor(10, 4, color(0, 204, 153));
   GCScheme.changePaletteColor(10, 7, color(211, 237, 255));
   GCScheme.changePaletteColor(10, 6, color(211, 237, 255));
-  
+
   //Control de los colores de los botones
   GCScheme.changePaletteColor(9, 2, color(14, 166, 35));
   GCScheme.changePaletteColor(9, 3, color(0, 204, 153));
