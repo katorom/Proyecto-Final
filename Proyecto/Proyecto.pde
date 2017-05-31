@@ -124,11 +124,21 @@ void prim () {
   addEst.setVisible(false);
   msjMAdm.setVisible(false);
   Cbic.setVisible(false);
+  listEliminar.setVisible(false); 
+  tborrab.setVisible(false); 
+  nuevaEst.setVisible(false); 
+  tnEst.setVisible(false); 
+  crearE.setVisible(false);
+  modMulta.setVisible(false); 
+  lMulta.setVisible(false); 
+  borrarMulta.setVisible(false); 
+
 }
 
 void inadm () {
   modBike.setVisible(true); 
-  modStat.setVisible(true); 
+  modStat.setVisible(true);
+  modMulta.setVisible(true); 
   quemod.setVisible(true); 
   anadirb.setVisible(false); 
   borrarb.setVisible(false); 
@@ -142,6 +152,15 @@ void inadm () {
   CantB.setVisible(false); 
   addEst.setVisible(false); 
   Cbic.setVisible(false);
+  listEliminar.setVisible(false);
+  tborrab.setVisible(false); 
+  listEliminarE.setVisible(false); 
+  tborrarE.setVisible(false);
+  nuevaEst.setVisible(false); 
+  tnEst.setVisible(false); 
+  crearE.setVisible(false);
+  lMulta.setVisible(false); 
+  borrarMulta.setVisible(false); 
 }
 
 
@@ -206,7 +225,13 @@ public void customGUI() {
   Cbic.setFont(new Font("Cooper Black", Font.PLAIN, 35));
   CantB.setFont(new Font("Times New Roman", Font.PLAIN, 22)); 
   addEst.setFont(new Font("Times New Roman", Font.PLAIN, 22));
-  
+  listEliminar.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  tborrab.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  listEliminarE.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  tborrarE.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  nuevaEst.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  tnEst.setFont(new Font("Cooper Black", Font.PLAIN, 35)); 
+  crearE.setFont(new Font("Cooper Black", Font.PLAIN, 25));
 
 
   //Cambio del color de las instrucciones

@@ -180,21 +180,34 @@ public void anadirb_click1(GButton source, GEvent event) { //_CODE_:anadirb:8843
 
 public void borrarb_click1(GButton source, GEvent event) { //_CODE_:borrarb:821566:
   println("borrarb - GButton >> GEvent." + event + " @ " + millis());
-  admin.deleteBikes();
+  //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
+  listEliminar.setItems(NombreArreglo, 0);
   anadirb.setVisible(false); 
   borrarb.setVisible(false);
+  //Muestra la lista
+  //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
+  listEliminar.setVisible(true); 
+  tborrab.setVisible(true); 
+  
 } //_CODE_:borrarb:821566:
 
 public void anadirE_click1(GButton source, GEvent event) { //_CODE_:anadirE:819507:
   println("anadirE - GButton >> GEvent." + event + " @ " + millis());
-  admin.addStation();
   anadirE.setVisible(false); 
   borrarE.setVisible(false);
+  nuevaEst.setVisible(true); 
+  tnEst.setVisible(true); 
+  crearE.setVisible(true);
+  //ESTA YA ETA LISTA (CREO), LO UNICO QUE HACE ES MOSTRAR EL TEXTFIELD Y EL BOTON
 } //_CODE_:anadirE:819507:
 
 public void borrarE_click1(GButton source, GEvent event) { //_CODE_:borrarE:674434:
   println("borrarE - GButton >> GEvent." + event + " @ " + millis());
-  admin.deleteStation();
+  //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
+  listEliminar.setItems(NombreArreglo, 0);
+  //Muestra la lista
+  //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
+  
   anadirE.setVisible(false); 
   borrarE.setVisible(false);
 } //_CODE_:borrarE:674434:
@@ -238,6 +251,7 @@ public void ingresar_click1(GButton source, GEvent event) { //_CODE_:ingresar:41
   ingresar.setVisible(false);
   modBike.setVisible(true); 
   modStat.setVisible(true); 
+  modMulta.setVisible(true); 
   quemod.setVisible(true);
 } //_CODE_:ingresar:418275:
 
@@ -257,6 +271,49 @@ public void addEst_click1(GDropList source, GEvent event) { //_CODE_:addEst:5553
   Cbic.setVisible(false);
   inadm ();
 } //_CODE_:addEst:555347:
+
+public void listEliminar_click1(GDropList source, GEvent event) { //_CODE_:listEliminar:763784:
+  println("listEliminar - GDropList >> GEvent." + event + " @ " + millis());
+  String bike = listEliminar.getSelectedText ();
+  //ESTE STRING HAY QUE CORTARLO Y PASARLE O UNO O LOS DOS PARAMETROS A DeleteBikes
+  deleteBikes(num,estacion);
+  inadm ();
+} //_CODE_:listEliminar:763784:
+
+public void listEliminarE_click1(GDropList source, GEvent event) { //_CODE_:listEliminarE:419884:
+  println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
+   String estacion = listEliminarE.getSelectedText ();
+  //ESTE STRING HAY QUE PASARLO COMO PARAMETRO A DeleteStation
+  admin.deleteStation(estacion);
+  inadm ();
+} //_CODE_:listEliminarE:419884:
+
+public void nuevaEst_change1(GTextField source, GEvent event) { //_CODE_:nuevaEst:414157:
+  println("nuevaEst - GTextField >> GEvent." + event + " @ " + millis());
+} //_CODE_:nuevaEst:414157:
+
+public void crearE_click1(GButton source, GEvent event) { //_CODE_:crearE:679530:
+  println("crearE - GButton >> GEvent." + event + " @ " + millis());
+  String nombre = nuevaEst.getText(); //SE OBTIENE EL NOMBRE ESCRITO
+  admin.addStation(nombre); //SE LE PASA COMO PARAMETRO A addStation
+  inadm ();
+} //_CODE_:crearE:679530:
+
+public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:735422:
+  println("modMulta - GButton >> GEvent." + event + " @ " + millis());
+  //Aqui se tiene que leer el Id de la tarjeta
+  //SE TIENE QUE DEFINIR COMO SE GUARDA E NOMBRE DEL USUARIIO Y EL VALOR DE LA MULTA y el CardID
+  lMulta.setText(Nombredelusuario + " tiene una multa de $ " + valor multa);
+  lMulta.setVisible(true); 
+  borrarMulta.setVisible(true);
+} //_CODE_:modMulta:735422:
+
+public void borrarMulta_click1(GButton source, GEvent event) { //_CODE_:borrarMulta:691324:
+  println("borrarMulta - GButton >> GEvent." + event + " @ " + millis());
+  //NO SE COMO HACER PARA QUE PASE EL VALOR SIN VOLVER A LEERLA (VARIABLE GLOBAL (?) )
+  admin.eliminarMultas(CardID);
+  inadm ();
+} //_CODE_:borrarMulta:691324:
 
 
 
@@ -310,7 +367,7 @@ public void createGUI(){
   sig.addEventHandler(this, "siguiente_click");
   NumBici = new GLabel(this, 114, 190, 600, 300);
   NumBici.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
-  NumBici.setLocalColorScheme(GCScheme.GOLD_SCHEME);
+  NumBici.setLocalColorScheme(GCScheme.SCHEME_10);
   NumBici.setOpaque(false);
   ok = new GButton(this, 402, 563, 300, 90);
   ok.setText("Ok");
@@ -345,11 +402,11 @@ public void createGUI(){
   dest.setOpaque(false);
   SetEst = new GButton(this, 310, 516, 260, 100);
   SetEst.setText("Cargar estación ");
-  SetEst.setLocalColorScheme(GCScheme.SCHEME_10);
+  SetEst.setLocalColorScheme(GCScheme.SCHEME_9);
   SetEst.addEventHandler(this, "setEst_click1");
   modAdm = new GButton(this, 310, 352, 260, 100);
   modAdm.setText("Modo Administrador");
-  modAdm.setLocalColorScheme(GCScheme.SCHEME_10);
+  modAdm.setLocalColorScheme(GCScheme.SCHEME_9);
   modAdm.addEventHandler(this, "modAdm_click1");
   modo = new GLabel(this, 150, 232, 550, 100);
   modo.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
@@ -420,18 +477,62 @@ public void createGUI(){
   msjMAdm.setOpaque(false);
   CantB = new GTextField(this, 166, 424, 200, 40, G4P.SCROLLBARS_NONE);
   CantB.setPromptText("Cantidad de bicicletas");
-  CantB.setLocalColorScheme(GCScheme.SCHEME_9);
+  CantB.setLocalColorScheme(GCScheme.SCHEME_10);
   CantB.setOpaque(true);
   CantB.addEventHandler(this, "CantB_change1");
-  addEst = new GDropList(this, 504, 428, 220, 160, 3);
+  addEst = new GDropList(this, 534, 449, 220, 160, 3);
   addEst.setItems(loadStrings("list_555347"), 0);
-  addEst.setLocalColorScheme(GCScheme.SCHEME_9);
+  addEst.setLocalColorScheme(GCScheme.SCHEME_10);
   addEst.addEventHandler(this, "addEst_click1");
   Cbic = new GLabel(this, 117, 196, 600, 200);
   Cbic.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   Cbic.setText("Ingrese la cantidad de bicicletas y seleccione la estación a la que quiere añadirlas");
   Cbic.setLocalColorScheme(GCScheme.SCHEME_10);
   Cbic.setOpaque(false);
+  listEliminar = new GDropList(this, 314, 384, 250, 160, 3);
+  listEliminar.setItems(loadStrings("list_763784"), 0);
+  listEliminar.setLocalColorScheme(GCScheme.SCHEME_10);
+  listEliminar.addEventHandler(this, "listEliminar_click1");
+  tborrab = new GLabel(this, 117, 249, 600, 100);
+  tborrab.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  tborrab.setText("Selecione la bicicleta que desea eliminar");
+  tborrab.setLocalColorScheme(GCScheme.SCHEME_10);
+  tborrab.setOpaque(false);
+  listEliminarE = new GDropList(this, 313, 425, 250, 160, 3);
+  listEliminarE.setItems(loadStrings("list_419884"), 0);
+  listEliminarE.setLocalColorScheme(GCScheme.SCHEME_10);
+  listEliminarE.addEventHandler(this, "listEliminarE_click1");
+  tborrarE = new GLabel(this, 130, 249, 600, 70);
+  tborrarE.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  tborrarE.setText("Selecciones la estacion que desea eliminar");
+  tborrarE.setLocalColorScheme(GCScheme.SCHEME_10);
+  tborrarE.setOpaque(false);
+  nuevaEst = new GTextField(this, 316, 377, 250, 40, G4P.SCROLLBARS_NONE);
+  nuevaEst.setPromptText("Nombre de la nueva estacion");
+  nuevaEst.setLocalColorScheme(GCScheme.SCHEME_10);
+  nuevaEst.setOpaque(true);
+  nuevaEst.addEventHandler(this, "nuevaEst_change1");
+  tnEst = new GLabel(this, 121, 240, 600, 100);
+  tnEst.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  tnEst.setText("Ingrese el nombre de la estación nueva:");
+  tnEst.setLocalColorScheme(GCScheme.SCHEME_10);
+  tnEst.setOpaque(false);
+  crearE = new GButton(this, 336, 527, 220, 90);
+  crearE.setText("Crear estación");
+  crearE.setLocalColorScheme(GCScheme.SCHEME_9);
+  crearE.addEventHandler(this, "crearE_click1");
+  modMulta = new GButton(this, 336, 615, 250, 100);
+  modMulta.setText("Eliminar Multa");
+  modMulta.setLocalColorScheme(GCScheme.SCHEME_9);
+  modMulta.addEventHandler(this, "modMulta_click1");
+  lMulta = new GLabel(this, 166, 186, 550, 250);
+  lMulta.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
+  lMulta.setLocalColorScheme(GCScheme.SCHEME_10);
+  lMulta.setOpaque(false);
+  borrarMulta = new GButton(this, 333, 594, 250, 70);
+  borrarMulta.setText("Eliminar Multa");
+  borrarMulta.setLocalColorScheme(GCScheme.SCHEME_9);
+  borrarMulta.addEventHandler(this, "borrarMulta_click1");
 }
 
 // Variable declarations 
@@ -473,3 +574,13 @@ GLabel msjMAdm;
 GTextField CantB; 
 GDropList addEst; 
 GLabel Cbic; 
+GDropList listEliminar; 
+GLabel tborrab; 
+GDropList listEliminarE; 
+GLabel tborrarE; 
+GTextField nuevaEst; 
+GLabel tnEst; 
+GButton crearE; 
+GButton modMulta; 
+GLabel lMulta; 
+GButton borrarMulta; 

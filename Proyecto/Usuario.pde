@@ -38,6 +38,7 @@ public class Usuario extends User {
         msql.next();
         if (msql.getInt(1) == 0) {
           println("No hay bicicletas disponibles");
+          Nodis.setText("Lo sentimos, no hay bicicletas disponibles.");
           Nodis.setVisible(true);
           ok.setVisible(true);
         } else {         
