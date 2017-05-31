@@ -18,7 +18,8 @@ public class Usuario extends User {
   //Se crea un segundo constructor, el cual se usa para un usuario registrado, este constructor solo recibe dos parametros
   public Usuario(String CardID, MySQL msql) {//usuario registrado                                           
     msql.query("SELECT NombreUsuario, EstadoUsuario, CorreoUsuario FROM usuarios WHERE CardIDUsuario LIKE '"+CardID+"%'");                     
-    msql.next();                                                                                          
+    msql.next();   
+    println("AQUIIIIIIIII ID CONSTRUCTOR "+msql.getString(1)+"");
     this.Nombre = msql.getString(1);                                                                      
     this.CardID = CardID;                                   
     this.Estado = msql.getBoolean(2);

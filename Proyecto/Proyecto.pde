@@ -25,10 +25,11 @@ PImage bg; //Variable de imagen para fondo
 String ListaO [];
 String ListaD [];
 int adminbool = 0;
+String ip = "172.20.10.4";
 
 void setup() {
   size(845, 800);
-  bg = loadImage("bicirrun2.jpg"); //Se carga imagen para el fondo 
+  bg = loadImage("img/bicirrun2.jpg"); //Se carga imagen para el fondo 
   createGUI(); //Funcion de la interfaz gráfica, autogenerada
   customGUI();
   String portName = Serial.list()[0]; //Se selecciona el puerto serie de ARDUINO
@@ -58,6 +59,7 @@ void Registro() {
 
   String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
   myPort.clear(); //Se limpia el puerto serial.  
+  myPort.write('L'); //LEE TARJETA
   while (true) { // el ciclo while se ejecutara hasta que la persona acerque su carnet.
     id = cardID(); 
     if (id != null) {
@@ -133,7 +135,8 @@ void prim () {
   crearE.setVisible(false);
   modMulta.setVisible(false); 
   lMulta.setVisible(false); 
-  borrarMulta.setVisible(false); 
+  borrarMulta.setVisible(false);
+  ok2.setVisible(false); 
 
 }
 
@@ -187,6 +190,7 @@ void inicio () {
   Estaciones1.setVisible(false);
   destino.setVisible(false);
   dest.setVisible(false);
+  ok2.setVisible(false); 
 }
 
 //Controla el tipo de la letra y el tamaño de la letra, solo se ejecuta una vez
@@ -234,6 +238,11 @@ public void customGUI() {
   nuevaEst.setFont(new Font("Times New Roman", Font.PLAIN, 22));
   tnEst.setFont(new Font("Cooper Black", Font.PLAIN, 35)); 
   crearE.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  modMulta.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  lMulta.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  borrarMulta.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  ok2.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+
 
 
   //Cambio del color de las instrucciones

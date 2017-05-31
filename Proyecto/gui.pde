@@ -15,15 +15,15 @@
  */
 
 public void nombre_change(GTextField source, GEvent event) { //_CODE_:nombre:447644:
-  println("nombre - GTextField >> GEvent." + event + " @ " + millis());
+  //println("nombre - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:nombre:447644:
 
 public void email_change1(GTextField source, GEvent event) { //_CODE_:email:330141:
-  println("email - GTextField >> GEvent." + event + " @ " + millis());
+  //println("email - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:email:330141:
 
 public void registrar_click(GButton source, GEvent event) { //_CODE_:registrar:596100:
-  println("registrar - GButton >> GEvent." + event + " @ " + millis());
+  //println("registrar - GButton >> GEvent." + event + " @ " + millis());
   String Nombre = nombre.getText();
   String Correo = email.getText();
   elusuario = new Usuario(Nombre, idreg, Correo, msql);
@@ -31,7 +31,7 @@ public void registrar_click(GButton source, GEvent event) { //_CODE_:registrar:5
 } //_CODE_:registrar:596100:
 
 public void Pedir_click1(GButton source, GEvent event) { //_CODE_:Pedir:686565:
-  println("Pedir - GButton >> GEvent." + event + " @ " + millis());
+  //println("Pedir - GButton >> GEvent." + event + " @ " + millis());
   msql.query("SELECT `NombreEstacion` FROM `estaciones` WHERE `NombreEstacion` <> '"+CurrentStation+"'");
   ListaEstacionesD = "Seleccionar Estacion";
   println(ListaEstacionesD);
@@ -50,27 +50,30 @@ public void Pedir_click1(GButton source, GEvent event) { //_CODE_:Pedir:686565:
 } //_CODE_:Pedir:686565:
 
 public void devolver_click(GButton source, GEvent event) { //_CODE_:Devolver:920879:
-  println("Devolver - GButton >> GEvent." + event + " @ " + millis());
+  //println("Devolver - GButton >> GEvent." + event + " @ " + millis());
   bici.returnBike();
   NumBici.setText(elusuario.Nombre+" has devuelto la bicicleta número: "+ bici.Number);
   Devolver.setVisible(false);
   preg.setVisible(false);
   NumBici.setVisible(true);
-  ok.setVisible(true);
+  ok2.setVisible(true);
 } //_CODE_:Devolver:920879:
 
 public void siguiente_click(GButton source, GEvent event) { //_CODE_:sig:625524:
-  println("sig - GButton >> GEvent." + event + " @ " + millis());
+  //println("sig - GButton >> GEvent." + event + " @ " + millis());
   Registro();
 } //_CODE_:sig:625524:
 
 public void ok_click1(GButton source, GEvent event) { //_CODE_:ok:844847:
-  println("ok - GButton >> GEvent." + event + " @ " + millis());
+  //println("ok - GButton >> GEvent." + event + " @ " + millis());
+  //CAMBIAR LETRA
+  myPort.clear();
+  myPort.write('I'); //Motores Abrir
   inicio();
 } //_CODE_:ok:844847:
 
 public void Estaciones1_click1(GDropList source, GEvent event) { //_CODE_:Estaciones1:259145:
-  println("Estaciones1 - GDropList >> GEvent." + event + " @ " + millis());
+  //println("Estaciones1 - GDropList >> GEvent." + event + " @ " + millis());
 
   CurrentStation = Estaciones1.getSelectedText ();
   println(CurrentStation);
@@ -84,7 +87,7 @@ public void Estaciones1_click1(GDropList source, GEvent event) { //_CODE_:Estaci
 } //_CODE_:Estaciones1:259145:
 
 public void destino_click1(GDropList source, GEvent event) { //_CODE_:destino:382050:
-  println("destino - GDropList >> GEvent." + event + " @ " + millis());
+  //println("destino - GDropList >> GEvent." + event + " @ " + millis());
   String llegada = destino.getSelectedText ();
   bici.assignBike(llegada);
   NumBici.setText(elusuario.Nombre +" toma la bicicleta número: "+ bici.Number);
@@ -97,11 +100,11 @@ public void destino_click1(GDropList source, GEvent event) { //_CODE_:destino:38
 
 public void setEst_click1(GButton source, GEvent event) { //_CODE_:SetEst:494354:
   //Configura la estacion en la que se encuentra el computador
-  println("SetEst - GButton >> GEvent." + event + " @ " + millis());
+  //println("SetEst - GButton >> GEvent." + event + " @ " + millis());
   SetEst.setVisible(false); 
   modAdm.setVisible(false); 
   modo.setVisible(false);
-  msql = new MySQL( this, "172.20.10.4", database, user, pass); // Se crea el objeto tipo SQL para ESTACION
+  msql = new MySQL( this, ip, database, user, pass); // Se crea el objeto tipo SQL para ESTACION
   if (msql.connect()) {
     println("successful connection");
   } else {
@@ -109,7 +112,7 @@ public void setEst_click1(GButton source, GEvent event) { //_CODE_:SetEst:494354
     while (true);
   }
   println("Entro modo ESTACION");
-  
+
   println(adminbool);
   adminbool=1;
   //
@@ -128,7 +131,7 @@ public void setEst_click1(GButton source, GEvent event) { //_CODE_:SetEst:494354
 } //_CODE_:SetEst:494354:
 
 public void modAdm_click1(GButton source, GEvent event) { //_CODE_:modAdm:811607:
-  println("modAdm - GButton >> GEvent." + event + " @ " + millis());
+  //println("modAdm - GButton >> GEvent." + event + " @ " + millis());
   SetEst.setVisible(false); 
   modAdm.setVisible(false); 
   modo.setVisible(false); 
@@ -140,7 +143,7 @@ public void modAdm_click1(GButton source, GEvent event) { //_CODE_:modAdm:811607
 } //_CODE_:modAdm:811607:
 
 public void modBike_click1(GButton source, GEvent event) { //_CODE_:modBike:638222:
-  println("button1 - GButton >> GEvent." + event + " @ " + millis());
+  //println("button1 - GButton >> GEvent." + event + " @ " + millis());
   modBike.setVisible(false); 
   modStat.setVisible(false); 
   modMulta.setVisible(false);
@@ -151,7 +154,7 @@ public void modBike_click1(GButton source, GEvent event) { //_CODE_:modBike:6382
 } //_CODE_:modBike:638222:
 
 public void modStat_click1(GButton source, GEvent event) { //_CODE_:modStat:652553:
-  println("button2 - GButton >> GEvent." + event + " @ " + millis());
+  //println("button2 - GButton >> GEvent." + event + " @ " + millis());
   modBike.setVisible(false); 
   modStat.setVisible(false); 
   modMulta.setVisible(false);
@@ -161,7 +164,7 @@ public void modStat_click1(GButton source, GEvent event) { //_CODE_:modStat:6525
 } //_CODE_:modStat:652553:
 
 public void anadirb_click1(GButton source, GEvent event) { //_CODE_:anadirb:884316:
-  println("anadirb - GButton >> GEvent." + event + " @ " + millis());
+  //println("anadirb - GButton >> GEvent." + event + " @ " + millis());
   msql.query("SELECT NombreEstacion FROM estaciones");
   ListaEstacionesO = "Seleccionar Estacion";
   println(ListaEstacionesO);
@@ -181,20 +184,30 @@ public void anadirb_click1(GButton source, GEvent event) { //_CODE_:anadirb:8843
 } //_CODE_:anadirb:884316:
 
 public void borrarb_click1(GButton source, GEvent event) { //_CODE_:borrarb:821566:
-  println("borrarb - GButton >> GEvent." + event + " @ " + millis());
+  //println("borrarb - GButton >> GEvent." + event + " @ " + millis());
   //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
-  /*listEliminar.setItems(NombreArreglo, 0);
+  msql.query("SELECT IdBicicleta, NombreEstacion FROM `bicicletas`,`estación-bicicletas`,`estaciones` WHERE (`bicicletas`.`IdBicicleta`=`estación-bicicletas`.`IdBicicletas`) AND (`estación-bicicletas`.`IdEstacion`=`estaciones`.`IdEstacion`) ORDER BY IdBicicleta");
+  ListaEstacionesO = "Seleccionar Bici - Estacion";
+  println(ListaEstacionesO);
+  while (msql.next()==true) {
+    String ListaEstacionestmp = msql.getString(1);
+    ListaEstacionestmp = ListaEstacionestmp+" - "+msql.getString(2);
+    ListaEstacionesO = ListaEstacionesO+","+ListaEstacionestmp;
+  }
+  ListaO = splitTokens(ListaEstacionesO, ",");
+  printArray(ListaO);
+  listEliminar.setItems(ListaO, 0);
   anadirb.setVisible(false); 
   borrarb.setVisible(false);
+  msjMAdm.setVisible(false);
   //Muestra la lista
   //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
   listEliminar.setVisible(true); 
-  tborrab.setVisible(true); */
-  
+  tborrab.setVisible(true);
 } //_CODE_:borrarb:821566:
 
 public void anadirE_click1(GButton source, GEvent event) { //_CODE_:anadirE:819507:
-  println("anadirE - GButton >> GEvent." + event + " @ " + millis());
+  //println("anadirE - GButton >> GEvent." + event + " @ " + millis());
   anadirE.setVisible(false); 
   borrarE.setVisible(false);
   nuevaEst.setVisible(true); 
@@ -204,40 +217,37 @@ public void anadirE_click1(GButton source, GEvent event) { //_CODE_:anadirE:8195
 } //_CODE_:anadirE:819507:
 
 public void borrarE_click1(GButton source, GEvent event) { //_CODE_:borrarE:674434:
-  println("borrarE - GButton >> GEvent." + event + " @ " + millis());
+  //println("borrarE - GButton >> GEvent." + event + " @ " + millis());
   //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
   /*listEliminar.setItems(NombreArreglo, 0);
-  //Muestra la lista
-  //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
-  
-  anadirE.setVisible(false); 
-  borrarE.setVisible(false);*/
+   //Muestra la lista
+   //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
+   
+   anadirE.setVisible(false); 
+   borrarE.setVisible(false);*/
+  inadm();
 } //_CODE_:borrarE:674434:
 
 public void Salir_click1(GButton source, GEvent event) { //_CODE_:Salir:794701:
-  println("Salir - GButton >> GEvent." + event + " @ " + millis());
-  if(adminbool==1){
+  //println("Salir - GButton >> GEvent." + event + " @ " + millis());
+  if (adminbool==1) {
     msql.query("UPDATE estaciones SET EstadoEstacion=false WHERE IdEstacion="+IdCurrentStation+"");
     println(IdCurrentStation);
   }
   println(adminbool);
-  exit(); 
+  exit();
 } //_CODE_:Salir:794701:
 
 public void admUser_change1(GTextField source, GEvent event) { //_CODE_:admUser:729557:
-  println("admUser - GTextField >> GEvent." + event + " @ " + millis());
+  //println("admUser - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:admUser:729557:
 
-public void admPass_change1(GTextField source, GEvent event) { //_CODE_:admPass:373313:
-  println("admPass - GTextField >> GEvent." + event + " @ " + millis());
-} //_CODE_:admPass:373313:
-
 public void ingresar_click1(GButton source, GEvent event) { //_CODE_:ingresar:418275:
-  println("ingresar - GButton >> GEvent." + event + " @ " + millis());
+  //println("ingresar - GButton >> GEvent." + event + " @ " + millis());
   String User = admUser.getText();
-  String password = admPass.getText();
+  String password = admPass.getPassword();
   admin = new Administrador(msql, User, password);
-  msql = new MySQL( this, "172.20.10.4", database, admin.Nombre, admin.Password); // Se crea el objeto tipo SQL para ADMIN
+  msql = new MySQL( this, ip, database, admin.Nombre, admin.Password); // Se crea el objeto tipo SQL para ADMIN
   if (msql.connect()) {
     println("successful connection");
   } else {
@@ -258,53 +268,58 @@ public void ingresar_click1(GButton source, GEvent event) { //_CODE_:ingresar:41
 } //_CODE_:ingresar:418275:
 
 public void CantB_change1(GTextField source, GEvent event) { //_CODE_:CantB:853562:
-  println("CantB - GTextField >> GEvent." + event + " @ " + millis());
+  //println("CantB - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:CantB:853562:
 
 public void addEst_click1(GDropList source, GEvent event) { //_CODE_:addEst:555347:
-  println("addEst - GDropList >> GEvent." + event + " @ " + millis());
+  //println("addEst - GDropList >> GEvent." + event + " @ " + millis());
   String cant =  CantB.getText();
   int AT = Integer.parseInt(cant); 
   println(AT);
   String estacion = addEst.getSelectedText ();
   println(AT);
   println(estacion);
-  admin.addBikes(AT,estacion);
+  admin.addBikes(AT, estacion);
   Cbic.setVisible(false);
   inadm ();
 } //_CODE_:addEst:555347:
 
 public void listEliminar_click1(GDropList source, GEvent event) { //_CODE_:listEliminar:763784:
-  println("listEliminar - GDropList >> GEvent." + event + " @ " + millis());
-  /*String bike = listEliminar.getSelectedText ();
+  //println("listEliminar - GDropList >> GEvent." + event + " @ " + millis());
+  String bike = listEliminar.getSelectedText();
+  println(bike);
+  String bike2[] = splitTokens(bike, " ");
+  int num = Integer.parseInt(bike2[0]);
+  println(num);
   //ESTE STRING HAY QUE CORTARLO Y PASARLE O UNO O LOS DOS PARAMETROS A DeleteBikes
-  deleteBikes(num,estacion);
-  inadm ();*/
+  admin.deleteBikes(num);
+  inadm ();
 } //_CODE_:listEliminar:763784:
 
 public void listEliminarE_click1(GDropList source, GEvent event) { //_CODE_:listEliminarE:419884:
-  println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
-   String estacion = listEliminarE.getSelectedText ();
+  //println("dropList1 - GDropList >> GEvent." + event + " @ " + millis());
+  String estacion = listEliminarE.getSelectedText ();
   //ESTE STRING HAY QUE PASARLO COMO PARAMETRO A DeleteStation
   admin.deleteStation(estacion);
   inadm ();
 } //_CODE_:listEliminarE:419884:
 
 public void nuevaEst_change1(GTextField source, GEvent event) { //_CODE_:nuevaEst:414157:
-  println("nuevaEst - GTextField >> GEvent." + event + " @ " + millis());
+  //println("nuevaEst - GTextField >> GEvent." + event + " @ " + millis());
 } //_CODE_:nuevaEst:414157:
 
 public void crearE_click1(GButton source, GEvent event) { //_CODE_:crearE:679530:
-  println("crearE - GButton >> GEvent." + event + " @ " + millis());
+  //println("crearE - GButton >> GEvent." + event + " @ " + millis());
   String nombre = nuevaEst.getText(); //SE OBTIENE EL NOMBRE ESCRITO
   admin.addStation(nombre); //SE LE PASA COMO PARAMETRO A addStation
   inadm ();
 } //_CODE_:crearE:679530:
 
 public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:735422:
-  println("modMulta - GButton >> GEvent." + event + " @ " + millis());
+  //println("modMulta - GButton >> GEvent." + event + " @ " + millis());
   String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
-  myPort.clear(); //Se limpia el puerto serial.  
+  myPort.clear(); //Se limpia el puerto serial.
+  myPort.write('L');
   while (true) { // el ciclo while se ejecutara hasta que la persona acerque su carnet.
     id = cardID(); 
     if (id != null) {
@@ -317,14 +332,17 @@ public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:73
   int valormulta = msql.getInt(1);
   elusuario = new Usuario(id, msql); 
   println("Bienvenido" +" "+elusuario.Nombre);
-  //SE TIENE QUE DEFINIR COMO SE GUARDA E NOMBRE DEL USUARIIO Y EL VALOR DE LA MULTA y el CardID
-  lMulta.setText(elusuario.Nombre+" tiene una multas de $ "+valormulta);
+  modBike.setVisible(false);
+  modStat.setVisible(false);
+  quemod.setVisible(false);
+  modMulta.setVisible(false);
+  lMulta.setText(elusuario.Nombre+" tiene una multa de $ "+valormulta);
   lMulta.setVisible(true); 
   borrarMulta.setVisible(true);
 } //_CODE_:modMulta:735422:
 
 public void borrarMulta_click1(GButton source, GEvent event) { //_CODE_:borrarMulta:691324:
-  println("borrarMulta - GButton >> GEvent." + event + " @ " + millis());
+  //println("borrarMulta - GButton >> GEvent." + event + " @ " + millis());
   //NO SE COMO HACER PARA QUE PASE EL VALOR SIN VOLVER A LEERLA (VARIABLE GLOBAL (?) )
   int valormulta = admin.eliminarMultas(elusuario.CardID);
   lMulta.setText(elusuario.Nombre+" adeuda "+valormulta);
@@ -332,6 +350,17 @@ public void borrarMulta_click1(GButton source, GEvent event) { //_CODE_:borrarMu
   println("La multa se borró exitosamente :D");
   inadm ();
 } //_CODE_:borrarMulta:691324:
+
+public void admPass_change1(GPassword source, GEvent event) { //_CODE_:admPass:500611:
+  println("admPass - GPassword >> GEvent." + event + " @ " + millis());
+} //_CODE_:admPass:500611:
+
+public void ok2_click1(GButton source, GEvent event) { //_CODE_:ok2:820252:
+  println("ok2 - GButton >> GEvent." + event + " @ " + millis());
+  myPort.clear();
+  myPort.write('D'); //Motores Cerrar
+  inicio();
+} //_CODE_:ok2:820252:
 
 
 
@@ -469,11 +498,6 @@ public void createGUI(){
   admUser.setLocalColorScheme(GCScheme.SCHEME_10);
   admUser.setOpaque(true);
   admUser.addEventHandler(this, "admUser_change1");
-  admPass = new GTextField(this, 520, 479, 250, 50, G4P.SCROLLBARS_NONE);
-  admPass.setPromptText("Pasword");
-  admPass.setLocalColorScheme(GCScheme.SCHEME_10);
-  admPass.setOpaque(true);
-  admPass.addEventHandler(this, "admPass_change1");
   admnom = new GLabel(this, 144, 345, 250, 60);
   admnom.setTextAlign(GAlign.CENTER, GAlign.MIDDLE);
   admnom.setText("Ingrese usuario");
@@ -493,7 +517,7 @@ public void createGUI(){
   msjMAdm.setText("Seleccione lo que desea hacer:");
   msjMAdm.setLocalColorScheme(GCScheme.SCHEME_10);
   msjMAdm.setOpaque(false);
-  CantB = new GTextField(this, 166, 424, 200, 40, G4P.SCROLLBARS_NONE);
+  CantB = new GTextField(this, 166, 449, 200, 40, G4P.SCROLLBARS_NONE);
   CantB.setPromptText("Cantidad de bicicletas");
   CantB.setLocalColorScheme(GCScheme.SCHEME_10);
   CantB.setOpaque(true);
@@ -507,7 +531,7 @@ public void createGUI(){
   Cbic.setText("Ingrese la cantidad de bicicletas y seleccione la estación a la que quiere añadirlas");
   Cbic.setLocalColorScheme(GCScheme.SCHEME_10);
   Cbic.setOpaque(false);
-  listEliminar = new GDropList(this, 314, 384, 250, 160, 3);
+  listEliminar = new GDropList(this, 314, 384, 250, 240, 5);
   listEliminar.setItems(loadStrings("list_763784"), 0);
   listEliminar.setLocalColorScheme(GCScheme.SCHEME_10);
   listEliminar.addEventHandler(this, "listEliminar_click1");
@@ -551,6 +575,15 @@ public void createGUI(){
   borrarMulta.setText("Eliminar Multa");
   borrarMulta.setLocalColorScheme(GCScheme.SCHEME_9);
   borrarMulta.addEventHandler(this, "borrarMulta_click1");
+  admPass = new GPassword(this, 520, 479, 250, 50);
+  admPass.setMaxWordLength(16);
+  admPass.setLocalColorScheme(GCScheme.SCHEME_10);
+  admPass.setOpaque(true);
+  admPass.addEventHandler(this, "admPass_change1");
+  ok2 = new GButton(this, 402, 563, 300, 90);
+  ok2.setText("OK");
+  ok2.setLocalColorScheme(GCScheme.SCHEME_9);
+  ok2.addEventHandler(this, "ok2_click1");
 }
 
 // Variable declarations 
@@ -584,7 +617,6 @@ GButton anadirE;
 GButton borrarE; 
 GButton Salir; 
 GTextField admUser; 
-GTextField admPass; 
 GLabel admnom; 
 GLabel admcon; 
 GButton ingresar; 
@@ -602,3 +634,5 @@ GButton crearE;
 GButton modMulta; 
 GLabel lMulta; 
 GButton borrarMulta; 
+GPassword admPass; 
+GButton ok2; 

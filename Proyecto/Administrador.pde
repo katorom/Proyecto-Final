@@ -25,7 +25,9 @@ private class Administrador extends User{
     }
   }
   
-  void deleteBikes(){
+  void deleteBikes(int idbici){
+   // msql.query("DELETE FROM estación-bicicletas WHERE IdBicicletas = "+idbici+""); //Se realiza la busqueda del ID dentro de la base de datos
+   // msql.query("DELETE FROM bicicletas WHERE IdBicicleta = "+idbici+"");
   }
   
   void addStation(String Nombre){

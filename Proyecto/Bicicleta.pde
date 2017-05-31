@@ -25,9 +25,8 @@ public class Bicicleta {
     myPort.clear();
     //String Llegada = Dialogo.preguntar("Estacion", "¿Hacía dónde vas?");
     station = new Estacion (msql, Llegada);
-    msql.execute("INSERT INTO prestamos (CardID,IdBicicleta,IdEstacionSalida,IdEstacionLlegada) values ('"+elusuario.CardID+"',"+this.Number+","+IdCurrentStation+","+station.id_estacion+")");
+    msql.execute("INSERT INTO prestamos (CardID,IdBicicleta,IdEstacionSalida,IdEstacionLlegada) values ('"+elusuario.CardID+"\r\n',"+this.Number+","+IdCurrentStation+","+station.id_estacion+")");
     //msql.next();
-    //myPort.write(this.Number);  motores
     println("Has pedido la bici "+this.Number+" Sr@ "+elusuario.Nombre);
     msql.query("UPDATE usuarios SET EstadoUsuario = true WHERE CardIDUsuario LIKE '"+elusuario.CardID+"%'");
     //msql.next();
@@ -58,7 +57,7 @@ public class Bicicleta {
     //msql.next();
     println("Has devuelto la bicicleta");
     if (Demora > 0) {
-      msql.execute("INSERT INTO deudores (CardIDUsuario, TiempoExcedido, ValorMulta) values('"+elusuario.CardID+"',"+Demora+","+Valor+") ");
+      msql.execute("INSERT INTO deudores (CardIDUsuario, TiempoExcedido, ValorMulta) values('"+elusuario.CardID+"\r\n',"+Demora+","+Valor+") ");
       //msql.next();
       msql.query("DELETE FROM prestamos WHERE CardID LIKE '"+elusuario.CardID+"%'");
       //msql.next();
