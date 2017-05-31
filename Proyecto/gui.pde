@@ -101,7 +101,7 @@ public void setEst_click1(GButton source, GEvent event) { //_CODE_:SetEst:494354
   SetEst.setVisible(false); 
   modAdm.setVisible(false); 
   modo.setVisible(false);
-  msql = new MySQL( this, "192.168.1.67", database, user, pass); // Se crea el objeto tipo SQL para ESTACION
+  msql = new MySQL( this, "172.20.10.4", database, user, pass); // Se crea el objeto tipo SQL para ESTACION
   if (msql.connect()) {
     println("successful connection");
   } else {
@@ -183,13 +183,13 @@ public void anadirb_click1(GButton source, GEvent event) { //_CODE_:anadirb:8843
 public void borrarb_click1(GButton source, GEvent event) { //_CODE_:borrarb:821566:
   println("borrarb - GButton >> GEvent." + event + " @ " + millis());
   //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
-  listEliminar.setItems(NombreArreglo, 0);
+  /*listEliminar.setItems(NombreArreglo, 0);
   anadirb.setVisible(false); 
   borrarb.setVisible(false);
   //Muestra la lista
   //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
   listEliminar.setVisible(true); 
-  tborrab.setVisible(true); 
+  tborrab.setVisible(true); */
   
 } //_CODE_:borrarb:821566:
 
@@ -206,12 +206,12 @@ public void anadirE_click1(GButton source, GEvent event) { //_CODE_:anadirE:8195
 public void borrarE_click1(GButton source, GEvent event) { //_CODE_:borrarE:674434:
   println("borrarE - GButton >> GEvent." + event + " @ " + millis());
   //AQUI SE CREA EL ARREGLO DE STRINGS QUE SE LE PASA A LA LISTA DE BICICLETAS (LAS BICIS EXISTENTES)
-  listEliminar.setItems(NombreArreglo, 0);
+  /*listEliminar.setItems(NombreArreglo, 0);
   //Muestra la lista
   //LO SIGUIENTE QUE SE EJECUTA ESTA EN listEliminar_click1
   
   anadirE.setVisible(false); 
-  borrarE.setVisible(false);
+  borrarE.setVisible(false);*/
 } //_CODE_:borrarE:674434:
 
 public void Salir_click1(GButton source, GEvent event) { //_CODE_:Salir:794701:
@@ -237,7 +237,7 @@ public void ingresar_click1(GButton source, GEvent event) { //_CODE_:ingresar:41
   String User = admUser.getText();
   String password = admPass.getText();
   admin = new Administrador(msql, User, password);
-  msql = new MySQL( this, "192.168.1.67", database, admin.Nombre, admin.Password); // Se crea el objeto tipo SQL para ADMIN
+  msql = new MySQL( this, "172.20.10.4", database, admin.Nombre, admin.Password); // Se crea el objeto tipo SQL para ADMIN
   if (msql.connect()) {
     println("successful connection");
   } else {
@@ -276,10 +276,10 @@ public void addEst_click1(GDropList source, GEvent event) { //_CODE_:addEst:5553
 
 public void listEliminar_click1(GDropList source, GEvent event) { //_CODE_:listEliminar:763784:
   println("listEliminar - GDropList >> GEvent." + event + " @ " + millis());
-  String bike = listEliminar.getSelectedText ();
+  /*String bike = listEliminar.getSelectedText ();
   //ESTE STRING HAY QUE CORTARLO Y PASARLE O UNO O LOS DOS PARAMETROS A DeleteBikes
   deleteBikes(num,estacion);
-  inadm ();
+  inadm ();*/
 } //_CODE_:listEliminar:763784:
 
 public void listEliminarE_click1(GDropList source, GEvent event) { //_CODE_:listEliminarE:419884:
@@ -303,13 +303,22 @@ public void crearE_click1(GButton source, GEvent event) { //_CODE_:crearE:679530
 
 public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:735422:
   println("modMulta - GButton >> GEvent." + event + " @ " + millis());
-  //Aqui se tiene que leer el Id de la tarjeta
+  String id; // se declara una variable id, para usarla para poder saber si se ha leido una tarjeta
+  myPort.clear(); //Se limpia el puerto serial.  
+  while (true) { // el ciclo while se ejecutara hasta que la persona acerque su carnet.
+    id = cardID(); 
+    if (id != null) {
+      break;
+    } 
+    delay(1000); //para corregir errores de envio del ID del carnet se agrega un delay
+  }
+  msql.query( "SELECT ValorMulta FROM deudores WHERE CardIDUsuario LIKE '"+id+"%'"); //Se realiza la busqueda del ID dentro de la base de datos
+  msql.next();
+  int valormulta = msql.getInt(1);
+  elusuario = new Usuario(id, msql); 
+  println("Bienvenido" +" "+elusuario.Nombre);
   //SE TIENE QUE DEFINIR COMO SE GUARDA E NOMBRE DEL USUARIIO Y EL VALOR DE LA MULTA y el CardID
-  modBike.setVisible(false); 
-  modStat.setVisible(false); 
-  quemod.setVisible(false);
-  modMulta.setVisible(false);
-  lMulta.setText(Nombredelusuario + " tiene una deuda de $ " + valor multa);
+  lMulta.setText(elusuario.Nombre+" tiene una multas de $ "+valormulta);
   lMulta.setVisible(true); 
   borrarMulta.setVisible(true);
 } //_CODE_:modMulta:735422:
@@ -317,8 +326,10 @@ public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:73
 public void borrarMulta_click1(GButton source, GEvent event) { //_CODE_:borrarMulta:691324:
   println("borrarMulta - GButton >> GEvent." + event + " @ " + millis());
   //NO SE COMO HACER PARA QUE PASE EL VALOR SIN VOLVER A LEERLA (VARIABLE GLOBAL (?) )
-  admin.eliminarMultas(CardID);
-  lMulta.setText(Nombredelusuario + " Deuda " + valor multa);
+  int valormulta = admin.eliminarMultas(elusuario.CardID);
+  lMulta.setText(elusuario.Nombre+" adeuda "+valormulta);
+  msql.query("DELETE FROM deudores WHERE CardIDUsuario LIKE '"+elusuario.CardID+"%'");
+  println("La multa se borró exitosamente :D");
   inadm ();
 } //_CODE_:borrarMulta:691324:
 

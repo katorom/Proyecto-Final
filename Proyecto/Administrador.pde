@@ -36,8 +36,11 @@ private class Administrador extends User{
   }
    
    //La funcion que faltaba
-  void eliminarMultas (String CardID){
-  
+  public int eliminarMultas (String CardID){
+    msql.query( "SELECT ValorMulta FROM deudores WHERE CardIDUsuario LIKE '"+CardID+"%'"); //Se realiza la busqueda del ID dentro de la base de datos
+    msql.next();
+    int valormulta = msql.getInt(1);
+    return valormulta;
   }
   
   void accion(){//NO SE QUE HACE ESTA FUNCION
