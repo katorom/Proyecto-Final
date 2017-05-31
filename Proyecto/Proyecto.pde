@@ -126,6 +126,8 @@ void prim () {
   Cbic.setVisible(false);
   listEliminar.setVisible(false); 
   tborrab.setVisible(false); 
+  listEliminarE.setVisible(false); 
+  tborrarE.setVisible(false);
   nuevaEst.setVisible(false); 
   tnEst.setVisible(false); 
   crearE.setVisible(false);

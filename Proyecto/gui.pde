@@ -143,6 +143,7 @@ public void modBike_click1(GButton source, GEvent event) { //_CODE_:modBike:6382
   println("button1 - GButton >> GEvent." + event + " @ " + millis());
   modBike.setVisible(false); 
   modStat.setVisible(false); 
+  modMulta.setVisible(false);
   quemod.setVisible(false); 
   msjMAdm.setVisible(true);
   anadirb.setVisible(true); 
@@ -153,6 +154,7 @@ public void modStat_click1(GButton source, GEvent event) { //_CODE_:modStat:6525
   println("button2 - GButton >> GEvent." + event + " @ " + millis());
   modBike.setVisible(false); 
   modStat.setVisible(false); 
+  modMulta.setVisible(false);
   quemod.setVisible(false);
   anadirE.setVisible(true); 
   borrarE.setVisible(true);
@@ -303,7 +305,11 @@ public void modMulta_click1(GButton source, GEvent event) { //_CODE_:modMulta:73
   println("modMulta - GButton >> GEvent." + event + " @ " + millis());
   //Aqui se tiene que leer el Id de la tarjeta
   //SE TIENE QUE DEFINIR COMO SE GUARDA E NOMBRE DEL USUARIIO Y EL VALOR DE LA MULTA y el CardID
-  lMulta.setText(Nombredelusuario + " tiene una multa de $ " + valor multa);
+  modBike.setVisible(false); 
+  modStat.setVisible(false); 
+  quemod.setVisible(false);
+  modMulta.setVisible(false);
+  lMulta.setText(Nombredelusuario + " tiene una deuda de $ " + valor multa);
   lMulta.setVisible(true); 
   borrarMulta.setVisible(true);
 } //_CODE_:modMulta:735422:
@@ -312,6 +318,7 @@ public void borrarMulta_click1(GButton source, GEvent event) { //_CODE_:borrarMu
   println("borrarMulta - GButton >> GEvent." + event + " @ " + millis());
   //NO SE COMO HACER PARA QUE PASE EL VALOR SIN VOLVER A LEERLA (VARIABLE GLOBAL (?) )
   admin.eliminarMultas(CardID);
+  lMulta.setText(Nombredelusuario + " Deuda " + valor multa);
   inadm ();
 } //_CODE_:borrarMulta:691324:
 
