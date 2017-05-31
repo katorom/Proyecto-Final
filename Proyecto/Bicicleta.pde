@@ -4,9 +4,20 @@ public class Bicicleta {
   boolean Disponibilidad; 
 
   public Bicicleta(MySQL msql) {     
-    msql.query("SELECT IdBicicleta FROM `estaciones`,`estación-bicicletas`,`bicicletas` WHERE (`estaciones`.`NombreEstacion`='"+CurrentStation+"') AND (`estación-bicicletas`.`IdEstacion` = `estaciones`.`IdEstacion`) AND (`estación-bicicletas`.`IdBicicletas`=`bicicletas`.`IdBicicleta`) AND (EstadoBicicleta=false)");
-    msql.next();
+    println(this.Number);
+    if(elusuario.Estado==false){
+      msql.query("SELECT IdBicicleta FROM `estaciones`,`estación-bicicletas`,`bicicletas` WHERE (`estaciones`.`NombreEstacion`='"+CurrentStation+"') AND (`estación-bicicletas`.`IdEstacion` = `estaciones`.`IdEstacion`) AND (`estación-bicicletas`.`IdBicicletas`=`bicicletas`.`IdBicicleta`) AND (EstadoBicicleta=false)");
+      println(this.Number);
+      msql.next();
+    }else{
+      msql.query("SELECT IdBicicleta FROM `prestamos` WHERE CardID LIKE '"+elusuario.CardID+"%'");
+      println(this.Number);
+      msql.next();
+      println();
+    }
+    println(this.Number);
     this.Number = msql.getInt(1);
+    println(this.Number);
   }
 
   void assignBike(String Llegada) {

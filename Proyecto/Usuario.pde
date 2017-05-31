@@ -42,6 +42,7 @@ public class Usuario extends User {
           ok.setVisible(true);
         } else {         
           bici = new Bicicleta(msql);
+          preg.setText("Bienvenido " + elusuario.Nombre + "  ¿Desea pedir una bicicleta?");
           println(bici.Number);
           preg.setVisible(true);
           Pedir.setVisible(true);
@@ -50,8 +51,9 @@ public class Usuario extends User {
         }
       } else {
         msql.query("SELECT ValorMulta FROM deudores WHERE CardIDUsuario LIKE'"+this.CardID+"%'");
+        msql.next();
         int Valor_Multa = msql.getInt(1);
-        println("No puedes pedir una bici, debes pagar un valor de $"+Valor_Multa);
+        println("No puedes pedir una bici, debes pagar un valor de $ " + Valor_Multa);
         Nodis.setText("No puedes pedir una bici, debes pagar un valor de $: "+ Valor_Multa);
         Nodis.setVisible(true);
         ok.setVisible(true);

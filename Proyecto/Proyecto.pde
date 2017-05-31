@@ -10,10 +10,11 @@ Serial myPort; //se declara el objeto serial
 Usuario elusuario; //Se crea una variable de tipo usuario.
 Bicicleta bici;
 Estacion station;
+Administrador admin;
 
 //Varialbles necesarias para el constructor del objeto SQL
-String user     = "root";
-String pass     = "";
+String user     = "root4";
+String pass     = "nolecreo";
 String database = "proyectopoo";
 String ListaEstacionesO;
 String ListaEstacionesD;
@@ -23,42 +24,20 @@ String idreg;
 PImage bg; //Variable de imagen para fondo
 String ListaO [];
 String ListaD [];
+int adminbool = 0;
+
 void setup() {
   size(845, 800);
   bg = loadImage("bicirrun2.jpg"); //Se carga imagen para el fondo 
   createGUI(); //Funcion de la interfaz gráfica, autogenerada
   customGUI();
-  String portName = Serial.list()[1]; //Se selecciona el puerto serie de ARDUINO
+  String portName = Serial.list()[0]; //Se selecciona el puerto serie de ARDUINO
   myPort = new Serial(this, portName, 9600); //Se crea el objeto tipo Serie
-  msql = new MySQL( this, "localhost", database, user, pass ); // Se crea el objeto tipo SQL
-  if (msql.connect()) {
-  }//Primero se verifica si se esta conectado a la base de datos SQL
-  else {
-    println("failed connection");//Si no, se imprime un mensaje.
-    while (true);
-  }
-  in();
-  //station = new Estacion(msql);
-  //CurrentStation = station.NameStation;
-  //IdCurrentStation = station.id_estacion;
+  prim();
 }
 
 void draw() {
   background(bg);
-  /*switch(mode) {
-   
-   case 0: 
-   //Registro();
-   mode = -1;
-   break;
-   
-   case 1:
-   elusuario.accion();
-   mode = 0;
-   break;
-   default:
-   break;
-   }*/
 }
 
 
@@ -74,16 +53,6 @@ String cardID() { // metodo para leer el ID del carnet
   }
   return(null);
 }
-
-/*void keyPressed() {//Metodo temporal para alternar el menu
- 
- if (key == ' ') {
- 
- if (mode == -1) {
- mode = 1;
- }
- }   //mode = mode < 1 ? mode+1 : 0;
- }*/
 
 void Registro() {
 
@@ -118,36 +87,64 @@ void Registro() {
 }
 
 //Primera pantalla, solo se ve una vez
-//Configura la estacion en la que se encuentra el computador
-void in () {
-  msql.query("SELECT NombreEstacion FROM estaciones where EstadoEstacion = false");
-  ListaEstacionesO = "Seleccionar Estacion";
-  println(ListaEstacionesO);
-  while (msql.next()==true) {
-    String ListaEstacionestmp = msql.getString(1);
-    ListaEstacionesO = ListaEstacionesO+","+ListaEstacionestmp;
-  }
-  ListaO = split(ListaEstacionesO, ",");
-  printArray(ListaO);
-  Estaciones1.setItems(ListaO, 0);
-  adm.setVisible(true);
-  Estaciones1.setVisible(true);
-  Inicio.setVisible(false);
-  sig.setVisible(false);
-  email.setVisible(false);
-  nombre.setVisible(false);  
+void prim () {
+  Inicio.setVisible(false); 
+  nombre.setVisible(false); 
+  email.setVisible(false); 
   registrar.setVisible(false); 
   nom.setVisible(false); 
-  corr.setVisible(false);
+  corr.setVisible(false); 
   Pedir.setVisible(false); 
-  Devolver.setVisible(false);
-  NumBici.setVisible(false);
-  ok.setVisible(false);
-  preg.setVisible(false);
-  Nodis.setVisible(false);
-  destino.setVisible(false);
-  dest.setVisible(false);
+  Devolver.setVisible(false); 
+  sig.setVisible(false); 
+  NumBici.setVisible(false); 
+  ok.setVisible(false); 
+  preg.setVisible(false); 
+  Nodis.setVisible(false); 
+  Estaciones1.setVisible(false); 
+  adm.setVisible(false); 
+  destino.setVisible(false); 
+  dest.setVisible(false); 
+  SetEst.setVisible(true); 
+  modAdm.setVisible(true); 
+  modo.setVisible(true); 
+  modBike.setVisible(false); 
+  modStat.setVisible(false); 
+  quemod.setVisible(false); 
+  anadirb.setVisible(false); 
+  borrarb.setVisible(false); 
+  anadirE.setVisible(false); 
+  borrarE.setVisible(false); 
+  admUser.setVisible(false); 
+  admPass.setVisible(false); 
+  admnom.setVisible(false); 
+  admcon.setVisible(false); 
+  ingresar.setVisible(false);
+  CantB.setVisible(false); 
+  addEst.setVisible(false);
+  msjMAdm.setVisible(false);
+  Cbic.setVisible(false);
 }
+
+void inadm () {
+  modBike.setVisible(true); 
+  modStat.setVisible(true); 
+  quemod.setVisible(true); 
+  anadirb.setVisible(false); 
+  borrarb.setVisible(false); 
+  anadirE.setVisible(false); 
+  borrarE.setVisible(false); 
+  admUser.setVisible(false); 
+  admPass.setVisible(false); 
+  admnom.setVisible(false); 
+  admcon.setVisible(false); 
+  ingresar.setVisible(false);
+  CantB.setVisible(false); 
+  addEst.setVisible(false); 
+  Cbic.setVisible(false);
+}
+
+
 
 //Configuración de la pantalla de inicio
 void inicio () {
@@ -190,6 +187,26 @@ public void customGUI() {
   Estaciones1.setFont(new Font("Times New Roman", Font.PLAIN, 22));
   dest.setFont(new Font("Cooper Black", Font.PLAIN, 35));
   destino.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  SetEst.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  modAdm.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  modo.setFont(new Font("Cooper Black", Font.PLAIN, 35)); 
+  modBike.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  modStat.setFont(new Font("Cooper Black", Font.PLAIN, 25)); 
+  quemod.setFont(new Font("Cooper Black", Font.PLAIN, 35)); 
+  anadirb.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  borrarb.setFont(new Font("Cooper Black", Font.PLAIN, 25)); 
+  anadirE.setFont(new Font("Cooper Black", Font.PLAIN, 25)); 
+  borrarE.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  admUser.setFont(new Font("Times New Roman", Font.PLAIN, 22)); 
+  admPass.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  admnom.setFont(new Font("Cooper Black", Font.PLAIN, 25)); 
+  admcon.setFont(new Font("Cooper Black", Font.PLAIN, 25)); 
+  ingresar.setFont(new Font("Cooper Black", Font.PLAIN, 25));
+  msjMAdm.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  Cbic.setFont(new Font("Cooper Black", Font.PLAIN, 35));
+  CantB.setFont(new Font("Times New Roman", Font.PLAIN, 22)); 
+  addEst.setFont(new Font("Times New Roman", Font.PLAIN, 22));
+  
 
 
   //Cambio del color de las instrucciones
